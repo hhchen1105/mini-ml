@@ -30,7 +30,7 @@ This project aims to provide a backbone implementation of the key machine learni
 
 2. Good design demands reasonable compromises
 
-  - We remove infrequently used parameters in the methods. For example, scikit-learn's linear regression class (`sklearn.linear_model.LinearRegression`) includes parameters `copy_X` (bool), `n_jobs` (int), and `positive` (bool), representing whether copying input feature or not, the number of jobs to use for the computation, and whether forcing the coefficients to be positive, respectively. We ignore these parameters in our implementation.
+  - While our APIs primarily follow scikit-learn's design, we have removed the infrequently used parameters from the corresponding scikit-learn APIs. For example, scikit-learn's linear regression class (`sklearn.linear_model.LinearRegression`) includes parameters `copy_X` (bool), `n_jobs` (int), and `positive` (bool), representing whether copying input feature or not, the number of jobs to use for the computation, and whether forcing the coefficients to be positive, respectively. We ignore these parameters in our implementation.
     
 
 ## Similar projects
