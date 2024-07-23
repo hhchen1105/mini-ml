@@ -34,7 +34,7 @@ This project aims to provide a backbone implementation of the key machine learni
     
 
 ## Similar projects
-- [ML from scratch](https://github.com/eriklindernoren/ML-From-Scratch) - ``ML from scratch'' has excellent implementation on many ML models. However, the project has been inactive since 2019.
+- [ML from scratch](https://github.com/eriklindernoren/ML-From-Scratch) - ``ML from scratch'' has excellent implementation on many ML models. However, the project has been inactive since 2019. Also, the project has its own API design.
 
 ## TODOs
 - Add an installation guide
