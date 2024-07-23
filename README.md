@@ -7,8 +7,8 @@ This project aims to provide a backbone implementation of the key machine learni
 ## Design principle
 
 1. Simplicity favours regularity
-
-  We will follow the conventions of scikit-learn's APIs whenever possible. Below are examples of using the linear regression model in scikit-learn and mini-ml, respectively.
+   
+  - We will follow the conventions of scikit-learn's APIs whenever possible. Below are examples of using the linear regression model in scikit-learn and mini-ml, respectively.
 
     ```python
     # scikit-learn
@@ -28,9 +28,9 @@ This project aims to provide a backbone implementation of the key machine learni
     reg = LinearRegression().fit(X, y)
     ```
 
-2. Good design demands good compromises
+2. Good design demands reasonable compromises
 
-  We may ignore infrequently used parameters in the methods. For example, the constructor of scikit-learn's linear regression (sklearn.linear_model.LinearRegression) includes parameters `copy_X` (bool), `n_jobs` (int), and `positive` (bool), representing whether copying input feature or not, the number of jobs to use for the computation, and whether forcing the coefficients to be positive, respectively. We ignore these parameters in our implementation.
+  - We remove infrequently used parameters in the methods. For example, the constructor of scikit-learn's linear regression (sklearn.linear_model.LinearRegression) includes parameters `copy_X` (bool), `n_jobs` (int), and `positive` (bool), representing whether copying input feature or not, the number of jobs to use for the computation, and whether forcing the coefficients to be positive, respectively. We ignore these parameters in our implementation.
     
 
 ## Similar projects
