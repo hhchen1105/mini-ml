@@ -2,11 +2,11 @@
 
 ## About
 
-This project aims to provide a backbone implementation of the key machine learning algorithms. We focus on code interpretability over efficiency.
+This project aims to provide a backbone implementation of the key machine learning algorithms for educational purposes. We focus on code readability over efficiency.
 
 ## Design principle
 
-1. Simplicity favours regularity
+1. Least surprise
    
   - We will follow the conventions of scikit-learn's APIs whenever possible. Below are examples of using the linear regression model in scikit-learn and mini-ml, respectively.
 
@@ -28,7 +28,11 @@ This project aims to provide a backbone implementation of the key machine learni
     reg = LinearRegression().fit(X, y)
     ```
 
-2. Good design demands reasonable compromises
+2. Readability over efficiency
+
+  - This project is mainly for educational purposes. Thus, we value code readability over code efficiency.
+
+3. Good design demands reasonable compromises
 
   - While our APIs primarily follow scikit-learn's design, we have removed the infrequently used parameters from the corresponding scikit-learn APIs. For example, scikit-learn's linear regression class (`sklearn.linear_model.LinearRegression`) includes parameters `copy_X` (bool), `n_jobs` (int), and `positive` (bool), representing whether copying input feature or not, the number of jobs to use for the computation, and whether forcing the coefficients to be positive, respectively. We ignore these parameters in our implementation.
     
