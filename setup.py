@@ -21,10 +21,13 @@ setup(name='miniml',
       license='MIT',
       packages=['miniml'],
       install_requires=[
-            'numpy',
+          'numpy',
+          'scikit-learn'
       ],
       include_package_data=True,
       zip_safe=False,
       test_suite='tests',
-      tests_require=['pytest'],
+      tests_require=[
+          'pytest',
+      ],
 )
