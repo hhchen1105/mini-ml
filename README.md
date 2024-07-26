@@ -16,7 +16,8 @@ This project aims to provide a backbone implementation of the key machine learni
     import numpy as np
     X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
     y = np.dot(X, np.array([1, 2])) + 3
-    reg = LinearRegression().fit(X, y)
+    reg = LinearRegression()
+    reg.fit(X, y)
     ```
 
     ```python
@@ -25,7 +26,8 @@ This project aims to provide a backbone implementation of the key machine learni
     import numpy as np
     X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
     y = np.dot(X, np.array([1, 2])) + 3
-    reg = LinearRegression().fit(X, y)
+    reg = LinearRegression()
+    reg..fit(X, y)
     ```
 
 2. Readability over efficiency
