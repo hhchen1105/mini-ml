@@ -2,7 +2,7 @@
 
 ## About
 
-This project aims to provide a backbone implementation of the key machine learning algorithms for educational purposes. We focus on code readability over efficiency.
+This project aims to provide a backbone implementation of the key machine learning algorithms for educational purposes.
 
 ## Design principle
 
