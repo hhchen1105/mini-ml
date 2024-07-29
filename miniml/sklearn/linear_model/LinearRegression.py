@@ -25,3 +25,9 @@ class LinearRegression():
             return np.dot(X, self.coef_) + self.intercept_
         else:
             return np.dot(X, self.coef_)
+
+    def score(self, X, y):
+        y_pred = self.predict(X)
+        u = np.sum((y - y_pred) ** 2)
+        v = np.sum((y - np.mean(y)) ** 2)
+        return 1 - u / v
