@@ -13,4 +13,7 @@ def test_LinearRegression():
     assert_allclose(reg.coef_, np.array([1, 2]))
 
     # TODO: test LinearRegression with fit_intercept=False
+    #       it seems pytest supports parameterize function; see
+    #       https://stackoverflow.com/questions/70619728/testing-the-same-function-with-different-parameters
 
+    # TODO: Does it work if we use reg = LinearRegression.fit(X, y)?
