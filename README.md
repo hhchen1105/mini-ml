@@ -2,7 +2,7 @@
 
 ## About
 
-This project aims to provide a backbone implementation of the key machine learning algorithms for educational purposes. We focus on code readability over efficiency.
+This project aims to provide a backbone implementation of the key machine learning algorithms for educational purposes.
 
 ## Design principle
 
@@ -27,7 +27,7 @@ This project aims to provide a backbone implementation of the key machine learni
     X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
     y = np.dot(X, np.array([1, 2])) + 3
     reg = LinearRegression()
-    reg..fit(X, y)
+    reg.fit(X, y)
     ```
 
 2. Readability over efficiency
