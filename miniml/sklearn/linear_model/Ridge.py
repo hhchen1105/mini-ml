@@ -19,10 +19,8 @@ class Ridge():
             self.solver = 'svd' if n > p else 'cholesky' if n > 2000 else 'sag'
         if self.solver == 'svd':
             U, s, Vt = np.linalg.svd(X, full_matrices=False)
-            idx = s > 1e-10
-            s_nnz = s[idx][:, np.newaxis]
-            UTy = np.dot(U.T, y)
-            self.coef_ = np.dot(Vt.T, UTy / s_nnz)
+            d = s / (s ** 2 + self.alpha)
+            self.coef_ = np.dot(Vt.T, d * np.dot(U.T, y))
         elif self.solver == 'cholesky':
             L = np.linalg.cholesky(np.dot(X.T, X) + self.alpha * np.eye(p))
             self.coef_ = np.linalg.solve(L, np.dot(X.T, y))
@@ -45,6 +43,8 @@ class Ridge():
                 w -= beta * G
                 w *= 1.0 / (1.0 + beta)
             self.coef_ = w
+        else:
+            raise ValueError(f"Unrecognized solver: {self.solver}")
         self.coef_ = self.coef_
         if self.fit_intercept:
             self.intercept_ = self.coef_[0]

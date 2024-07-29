@@ -23,3 +23,9 @@ def test_LinearRegression(fit_intercept, intercept_, coef_, score):
 
     # test X's shape after fitting
     assert X.shape == (4, 2)
+
+
+def test_Ridge():
+    assert 0 == 1
+    # TODO: test when alpha=0 with diff solvers and diff fit_intercept
+    # TODO: test when alpha=1 with diff solvers and diff fit_intercept
