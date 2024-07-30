@@ -11,6 +11,7 @@ class Ridge():
         self.random_state = random_state
         self.coef_, self.intercept_ = None, None
 
+    # Ref: SVD and Ridge Regression: https://talwarabhimanyu.github.io/blog/2020/07/10/svd2
     def fit(self, X, y):
         if self.fit_intercept:
             X = np.hstack([np.ones((X.shape[0], 1)), X])
