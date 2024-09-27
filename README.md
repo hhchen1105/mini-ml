@@ -44,4 +44,4 @@ This project aims to provide a backbone implementation of the key machine learni
 
 ## TODOs
 - Add an installation guide
-- Add fundamental supervised learning algorithms: linear regression, logistic regression, decision tree, random forest, SVM, and KNN
+- Add fundamental supervised learning algorithms: kNN, linear regression, logistic regression, decision tree, random forest, SVM, and KNN
