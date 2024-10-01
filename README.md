@@ -38,10 +38,20 @@ This project aims to provide a backbone implementation of the key machine learni
 
   - While our APIs primarily follow scikit-learn's design, we have removed the infrequently used parameters from the corresponding scikit-learn APIs. For example, scikit-learn's linear regression class (`sklearn.linear_model.LinearRegression`) includes parameters `copy_X` (bool), `n_jobs` (int), and `positive` (bool), representing whether copying input feature or not, the number of jobs to use for the computation, and whether forcing the coefficients to be positive, respectively. We ignore these parameters in our implementation.
     
+## Installation
+1. Change the directory to the folder that contains the mini-ml folder.
+
+   ```bash
+   cd [DownloadFolder]
+   ```
+
+2. Install the package by running
+   ```bash
+   pip install mini-ml
+   ```
 
 ## Similar projects
 - [ML from scratch](https://github.com/eriklindernoren/ML-From-Scratch) - ``ML from scratch'' has excellent implementation on many ML models. However, the project has been inactive since 2019. Also, the project has its own API design.
 
 ## TODOs
-- Add an installation guide
-- Add fundamental supervised learning algorithms: kNN, linear regression, logistic regression, decision tree, random forest, SVM, and KNN
+- Add fundamental supervised learning algorithms: decision tree, random forest, logistic regression, and SVM
