@@ -47,7 +47,7 @@ This project aims to provide a backbone implementation of the key machine learni
 
 2. Install the package by running
    ```bash
-   pip install mini-ml
+   pip install miniml
    ```
 
 ## Similar projects
