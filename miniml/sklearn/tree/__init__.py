@@ -1,1 +1,2 @@
 from .DecisionTreeClassifier import DecisionTreeClassifier
+from .DecisionTreeRegressor import DecisionTreeRegressor
