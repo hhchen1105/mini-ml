@@ -53,8 +53,11 @@ def test_split():
     X = np.array([[1], [2], [3], [4], [5]])
     y = np.array([1, 2, 3, 4, 5])
     model = DecisionTreeRegressor()
-    mse = model.split(X, y, 0, 3)
-    assert mse < float('inf')
+    X_left, X_right, y_left, y_right = model.split(X, y, 0, 3)
+    np.allclose(X_left, [[1], [2], [3]])
+    np.allclose(X_right, [[4], [5]])
+    np.allclose(y_left, [1, 2, 3])
+    np.allclose(y_right, [4, 5])
 
 def test_mse():
     y = np.array([1, 2, 3, 4, 5])

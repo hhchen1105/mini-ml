@@ -42,7 +42,11 @@ class DecisionTreeRegressor:
         for feature in range(X.shape[1]):
             thresholds = np.unique(X[:, feature])
             for threshold in thresholds:
-                mse = self.split(X, y, feature, threshold)
+                #mse = self.split(X, y, feature, threshold)
+                X_left, X_right, y_left, y_right = self.split(X, y, feature, threshold)
+                if len(X_left) == 0 or len(X_right) == 0:
+                    continue
+                mse = (self.mse(y_left) * len(y_left) + self.mse(y_right) * len(y_right)) / len(y)
                 if mse < best_mse:
                     best_feature, best_threshold, best_mse = feature, threshold, mse
         return best_feature, best_threshold, best_mse
@@ -50,9 +54,10 @@ class DecisionTreeRegressor:
     def split(self, X, y, feature, threshold):
         left_indices = X[:, feature] <= threshold
         right_indices = X[:, feature] > threshold
-        left_mse = self.mse(y[left_indices])
-        right_mse = self.mse(y[right_indices])
-        return (left_mse * len(y[left_indices]) + right_mse * len(y[right_indices])) / len(y)
+        return X[left_indices], X[right_indices], y[left_indices], y[right_indices]
+        #left_mse = self.mse(y[left_indices])
+        #right_mse = self.mse(y[right_indices])
+        #return (left_mse * len(y[left_indices]) + right_mse * len(y[right_indices])) / len(y)
 
     def mse(self, y):
         if len(y) == 0:
