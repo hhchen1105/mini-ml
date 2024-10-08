@@ -54,4 +54,4 @@ This project aims to provide a backbone implementation of the key machine learni
 - [ML from scratch](https://github.com/eriklindernoren/ML-From-Scratch) - ``ML from scratch'' has excellent implementation on many ML models. However, the project has been inactive since 2019. Also, the project has its own API design.
 
 ## TODOs
-- Add fundamental supervised learning algorithms: decision tree, random forest, logistic regression, and SVM
+- Add fundamental supervised learning algorithms: random forest, logistic regression, SVM, and gradient boosting machines.
