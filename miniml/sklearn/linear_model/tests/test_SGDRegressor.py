@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from miniml.sklearn.linear_model.SGDRegressor import SGDRegressor
+from miniml.sklearn.linear_model import SGDRegressor
 
 def test_fit():
     X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])

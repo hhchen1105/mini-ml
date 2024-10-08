@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from miniml.sklearn.cluster.KMeans import KMeans
+from miniml.sklearn.cluster import KMeans
 
 def test_kmeans_initialization():
     kmeans = KMeans(n_clusters=3, max_iter=100, tol=1e-3, random_state=42)
