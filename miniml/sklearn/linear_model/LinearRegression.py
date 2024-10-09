@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class LinearRegression():
+class LinearRegression:
     def __init__(self, *, fit_intercept=True):
         self.fit_intercept = fit_intercept
         self.coef_, self.intercept_, self.rank_, self.singular_ = None, None, None, None
@@ -9,7 +9,9 @@ class LinearRegression():
     def fit(self, X, y):
         if self.fit_intercept:
             X = np.hstack([np.ones((X.shape[0], 1)), X])
-        self.coef_, self.intercept_, self.rank_, self.singular_ = np.linalg.lstsq(X, y, rcond=None)
+        self.coef_, self.intercept_, self.rank_, self.singular_ = np.linalg.lstsq(
+            X, y, rcond=None
+        )
 
         self.coef_ = self.coef_
         if self.fit_intercept:

@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class DecisionTreeRegressor:
     def __init__(self, max_depth=None):
         self.max_depth = max_depth
@@ -32,19 +33,28 @@ class DecisionTreeRegressor:
         return X[left_mask], X[right_mask], y[left_mask], y[right_mask]
 
     def _best_split(self, X, y):
-        best_index, best_value, best_score, best_splits = None, None, float('inf'), None
+        best_index, best_value, best_score, best_splits = None, None, float("inf"), None
         for index in range(X.shape[1]):
             for value in np.unique(X[:, index]):
                 X_left, X_right, y_left, y_right = self._split(X, y, index, value)
                 if len(y_left) == 0 or len(y_right) == 0:
                     continue
-                score = (self._mse(y_left) * len(y_left) + self._mse(y_right) * len(y_right)) / len(y)
+                score = (
+                    self._mse(y_left) * len(y_left) + self._mse(y_right) * len(y_right)
+                ) / len(y)
                 if score < best_score:
-                    best_index, best_value, best_score, best_splits = index, value, score, (X_left, X_right, y_left, y_right)
+                    best_index, best_value, best_score, best_splits = (
+                        index,
+                        value,
+                        score,
+                        (X_left, X_right, y_left, y_right),
+                    )
         return best_index, best_value, best_splits
 
     def _build_tree(self, X, y, depth=0):
-        if len(np.unique(y)) == 1 or (self.max_depth is not None and depth >= self.max_depth):
+        if len(np.unique(y)) == 1 or (
+            self.max_depth is not None and depth >= self.max_depth
+        ):
             return np.mean(y)
         index, value, splits = self._best_split(X, y)
         if index is None:

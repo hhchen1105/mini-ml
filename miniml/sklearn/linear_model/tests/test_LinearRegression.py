@@ -3,10 +3,14 @@ import numpy as np
 import pytest
 from numpy.testing import assert_allclose
 
-@pytest.mark.parametrize("fit_intercept, intercept_, coef_, score", [
-    (True, 3, np.array([1, 2]), 1.),
-    (False, 0., np.array([2.09090909, 2.54545454]), 0.748252),
-])
+
+@pytest.mark.parametrize(
+    "fit_intercept, intercept_, coef_, score",
+    [
+        (True, 3, np.array([1, 2]), 1.0),
+        (False, 0.0, np.array([2.09090909, 2.54545454]), 0.748252),
+    ],
+)
 def test_LinearRegression(fit_intercept, intercept_, coef_, score):
     X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
     y = np.dot(X, np.array([1, 2])) + 3
@@ -22,4 +26,3 @@ def test_LinearRegression(fit_intercept, intercept_, coef_, score):
 
     # test X's shape after fitting
     assert X.shape == (4, 2)
-

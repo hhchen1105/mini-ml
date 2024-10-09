@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class SGDRegressor:
     def __init__(self, learning_rate=0.01, n_iter=1000, alpha=0.0001):
         self.learning_rate = learning_rate
@@ -23,13 +24,15 @@ class SGDRegressor:
                 prediction = np.dot(xi, self.coef_) + self.intercept_
                 error = prediction - yi
 
-                self.coef_ -= self.learning_rate * (error * xi + self.alpha * self.coef_)
+                self.coef_ -= self.learning_rate * (
+                    error * xi + self.alpha * self.coef_
+                )
                 self.intercept_ -= self.learning_rate * error
 
     def predict(self, X):
         X = np.array(X)
         return np.dot(X, self.coef_) + self.intercept_
-    
+
     def score(self, X, y):
         y_pred = self.predict(X)
         u = np.sum((y - y_pred) ** 2)

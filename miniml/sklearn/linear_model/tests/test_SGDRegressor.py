@@ -2,6 +2,7 @@ import pytest
 import numpy as np
 from miniml.sklearn.linear_model import SGDRegressor
 
+
 def test_fit():
     X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
     y = np.dot(X, np.array([1, 2])) + 3
@@ -9,6 +10,7 @@ def test_fit():
     model.fit(X, y)
     assert model.coef_ is not None
     assert model.intercept_ is not None
+
 
 def test_predict():
     X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
@@ -19,6 +21,7 @@ def test_predict():
     assert predictions is not None
     assert len(predictions) == len(y)
 
+
 def test_score():
     X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
     y = np.dot(X, np.array([1, 2])) + 3
@@ -26,6 +29,7 @@ def test_score():
     model.fit(X, y)
     score = model.score(X, y)
     assert score > 0.9  # Assuming the model should fit well
+
 
 def test_overfitting():
     X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
@@ -35,6 +39,7 @@ def test_overfitting():
     score = model.score(X, y)
     assert score > 0.99  # With more iterations, the model should fit even better
 
+
 def test_underfitting():
     X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
     y = np.dot(X, np.array([1, 2])) + 3
@@ -42,6 +47,7 @@ def test_underfitting():
     model.fit(X, y)
     score = model.score(X, y)
     assert score < 0.5  # With fewer iterations, the model might underfit
+
 
 if __name__ == "__main__":
     pytest.main()
