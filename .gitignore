@@ -4,3 +4,4 @@
 build/
 miniml.egg-info/
 __pycache__/
+.eggs/
