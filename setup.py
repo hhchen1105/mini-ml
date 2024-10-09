@@ -26,7 +26,7 @@ setup(name='miniml',
       ],
       include_package_data=True,
       zip_safe=False,
-      test_suite='tests',
+      setup_requires=['pytest-runner'],
       tests_require=[
           'pytest',
       ],
