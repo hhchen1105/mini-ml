@@ -37,7 +37,13 @@ This project aims to provide a backbone implementation of the key machine learni
 3. Good design demands reasonable compromises
 
     - While our APIs primarily follow scikit-learn's design, we have removed the infrequently used parameters from the corresponding scikit-learn APIs. For example, scikit-learn's linear regression class (`sklearn.linear_model.LinearRegression`) includes parameters `copy_X` (bool), `n_jobs` (int), and `positive` (bool), representing whether copying input feature or not, the number of jobs to use for the computation, and whether forcing the coefficients to be positive, respectively. We ignore these parameters in our implementation.
-    
+
+## Supported algorithms
+
+1. Supervised: k-nearest neighbors, decision tree regressor, decision tree classifier, linear regression, sgd regression.
+
+2. Unsupervised: k-means.
+
 ## Installation
 1. Change the directory to the folder that contains the mini-ml folder.
 
@@ -87,6 +93,3 @@ We welcome contributions. Here is a short intro on how to contribute.
 
 ## Similar projects
 - [ML from scratch](https://github.com/eriklindernoren/ML-From-Scratch) - ``ML from scratch'' has excellent implementation on many ML models. However, the project has been inactive since 2019. Also, the project has its own API design.
-
-## TODOs
-- Add fundamental supervised learning algorithms: random forest, logistic regression, SVM, and gradient boosting machines.
