@@ -50,6 +50,36 @@ This project aims to provide a backbone implementation of the key machine learni
    pip install miniml
    ```
 
+## Contribution
+
+We welcome contributions. Here is a short intro on how to contribute.
+
+1. Fork the Repository.
+
+  - Fork the repository to create your own copy. This allows you to freely make changes without affecting the original project.
+    
+2. Clone Your Fork to your local machine and navigate to the project directory.
+   ```bash
+   git clone https://github.com/your-username/project-name.git
+   cd mini-ml
+   ```  
+
+3. Create a New Branch
+   ```bash
+   git checkout -b feature-branch-name
+   ```
+     
+4. Make Your Changes
+  
+5. Commit and Push Your Changes
+   ```bash
+   git add .
+   git commit -m "Brief description of your changes"
+   git push origin feature-branch-name
+   ```
+
+6. Submit a Pull Request
+
 ## Similar projects
 - [ML from scratch](https://github.com/eriklindernoren/ML-From-Scratch) - ``ML from scratch'' has excellent implementation on many ML models. However, the project has been inactive since 2019. Also, the project has its own API design.
 
