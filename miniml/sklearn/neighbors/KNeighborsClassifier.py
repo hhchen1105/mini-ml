@@ -9,10 +9,10 @@ class KNeighborsClassifier:
         self.y_train = y
 
     def predict(self, X):
-        predictions = [self._predict(x) for x in X]
+        predictions = [self._predict_sample(x) for x in X]
         return np.array(predictions)
 
-    def _predict(self, x):
+    def _predict_sample(self, x):
         distances = np.linalg.norm(self.X_train - x, axis=1)
         k_indices = np.argsort(distances)[:self.n_neighbors]
         k_nearest_labels = self.y_train[k_indices]

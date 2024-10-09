@@ -37,7 +37,7 @@ def test_best_split():
     X = np.array([[1], [2], [3], [4], [5]])
     y = np.array([2, 2, 3, 4, 4])
     model = DecisionTreeRegressor()
-    feature, threshold, (X_left, X_right, y_left, y_right) = model.best_split(X, y)
+    feature, threshold, (X_left, X_right, y_left, y_right) = model._best_split(X, y)
     assert feature == 0
     assert threshold == 2.
     assert np.allclose(X_left, [[1], [2]])
@@ -49,7 +49,7 @@ def test_split():
     X = np.array([[1], [2], [3], [4], [5]])
     y = np.array([1, 2, 3, 4, 5])
     model = DecisionTreeRegressor()
-    X_left, X_right, y_left, y_right = model.split(X, y, 0, 3)
+    X_left, X_right, y_left, y_right = model._split(X, y, 0, 3)
     np.allclose(X_left, [[1], [2], [3]])
     np.allclose(X_right, [[4], [5]])
     np.allclose(y_left, [1, 2, 3])
@@ -58,5 +58,5 @@ def test_split():
 def test_mse():
     y = np.array([1, 2, 3, 4, 5])
     model = DecisionTreeRegressor()
-    mse = model.mse(y)
+    mse = model._mse(y)
     assert mse == 2.0
