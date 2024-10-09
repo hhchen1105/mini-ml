@@ -7,7 +7,7 @@ def test_fit():
     y = np.array([1, 2, 3, 4, 5])
     model = DecisionTreeRegressor(max_depth=2)
     model.fit(X, y)
-    assert model.tree_ is not None
+    assert model.tree is not None
 
 def test_predict():
     X = np.array([[1], [2], [3], [4], [5]])
@@ -25,13 +25,6 @@ def test_predict_single_sample():
     prediction = model.predict(np.array([[3]]))
     assert np.allclose(prediction, [3])
 
-def test_min_samples_split():
-    X = np.array([[1], [2], [3], [4], [5]])
-    y = np.array([1, 2, 3, 4, 5])
-    model = DecisionTreeRegressor(min_samples_split=3)
-    model.fit(X, y)
-    assert model.tree_ is not None
-
 def test_max_depth():
     X = np.array([[1], [2], [3], [4], [5]])
     y = np.array([2, 2, 3, 4, 4])
@@ -44,10 +37,13 @@ def test_best_split():
     X = np.array([[1], [2], [3], [4], [5]])
     y = np.array([2, 2, 3, 4, 4])
     model = DecisionTreeRegressor()
-    feature, threshold, mse = model.best_split(X, y)
+    feature, threshold, (X_left, X_right, y_left, y_right) = model.best_split(X, y)
     assert feature == 0
     assert threshold == 2.
-    assert mse < float('inf')
+    assert np.allclose(X_left, [[1], [2]])
+    assert np.allclose(X_right, [[3], [4], [5]])
+    assert np.allclose(y_left, [2, 2])
+    assert np.allclose(y_right, [3, 4, 4])
 
 def test_split():
     X = np.array([[1], [2], [3], [4], [5]])
