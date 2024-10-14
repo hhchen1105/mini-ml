@@ -2,7 +2,13 @@
 
 ## About
 
-This project aims to provide a backbone implementation of the key machine learning algorithms for educational purposes.
+This project provides a foundational implementation of key machine learning algorithms for educational and research purposes.
+
+From an **educational** perspective, while libraries like Scikit-learn prioritize robustness and efficiency by using complex and optimized code, our implementation focuses on readability above all else. This makes it easier for those looking to understand the inner workings of machine learning algorithms to follow along and grasp the details through the code.
+
+From a **research** standpoint, having a clear and flexible backbone implementation allows for faster experimentation and modification of existing machine learning algorithms. This can significantly streamline the process of improving or testing new algorithm designs.
+
+**In summary**, this project serves as a resource for both learners and researchers, providing clear, accessible code that encourages exploration and experimentation with machine learning algorithms without compromising on essential functionality.
 
 ## Design principle
 
