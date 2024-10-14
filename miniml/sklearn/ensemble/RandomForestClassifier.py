@@ -1,8 +1,11 @@
 import numpy as np
 from ..tree.DecisionTreeClassifier import DecisionTreeClassifier
 
+
 class RandomForestClassifier:
-    def __init__(self, n_estimators=100, max_features='sqrt', max_depth=None, random_state=None):
+    def __init__(
+        self, n_estimators=100, max_features="sqrt", max_depth=None, random_state=None
+    ):
         self.n_estimators = n_estimators
         self.max_features = max_features
         self.max_depth = max_depth
@@ -16,9 +19,9 @@ class RandomForestClassifier:
         return X[indices], y[indices]
 
     def _get_max_features(self, n_features):
-        if self.max_features == 'sqrt':
+        if self.max_features == "sqrt":
             return int(np.sqrt(n_features))
-        elif self.max_features == 'log2':
+        elif self.max_features == "log2":
             return int(np.log2(n_features))
         elif isinstance(self.max_features, int):
             return self.max_features
@@ -39,13 +42,31 @@ class RandomForestClassifier:
             self.trees.append(tree)
 
     def predict(self, X):
-        tree_predictions = np.array([tree.predict(X[:, feature_indices]) for tree, feature_indices in zip(self.trees, self.feature_indices)])
-        return np.squeeze(np.apply_along_axis(lambda x: np.bincount(x, minlength=2).argmax(), arr=tree_predictions, axis=0))
+        tree_predictions = np.array(
+            [
+                tree.predict(X[:, feature_indices])
+                for tree, feature_indices in zip(self.trees, self.feature_indices)
+            ]
+        )
+        return np.squeeze(
+            np.apply_along_axis(
+                lambda x: np.bincount(x, minlength=2).argmax(),
+                arr=tree_predictions,
+                axis=0,
+            )
+        )
 
     def predict_proba(self, X):
-        tree_predictions = np.array([tree.predict(X[:, feature_indices]) for tree, feature_indices in zip(self.trees, self.feature_indices)])
-        proba = np.apply_along_axis(lambda x: np.bincount(x, minlength=2) / len(x), arr=tree_predictions, axis=0)
+        tree_predictions = np.array(
+            [
+                tree.predict(X[:, feature_indices])
+                for tree, feature_indices in zip(self.trees, self.feature_indices)
+            ]
+        )
+        proba = np.apply_along_axis(
+            lambda x: np.bincount(x, minlength=2) / len(x), arr=tree_predictions, axis=0
+        )
         return proba.T
-    
+
     def score(self, X, y):
         return np.mean(self.predict(X) == y)
