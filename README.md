@@ -40,7 +40,7 @@ This project aims to provide a backbone implementation of the key machine learni
 
 ## Supported algorithms
 
-1. Supervised: k-nearest neighbors, decision tree regressor, decision tree classifier, linear regression, sgd regression.
+1. Supervised: k-nearest neighbors, decision tree regressor, decision tree classifier, random forest classifier, linear regression, sgd regression.
 
 2. Unsupervised: k-means.
 
