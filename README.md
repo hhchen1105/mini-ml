@@ -36,11 +36,11 @@ From a **research** standpoint, having a clear and flexible backbone implementat
     reg.fit(X, y)
     ```
 
-2. Readability over efficiency
+1. Readability over efficiency
 
     - This project is mainly for educational purposes. Thus, we value code readability over code efficiency.
 
-3. Good design demands reasonable compromises
+1. Good design demands reasonable compromises
 
     - While our APIs primarily follow scikit-learn's design, we have removed the infrequently used parameters and functions from the corresponding scikit-learn APIs. For example, scikit-learn's linear regression class (`sklearn.linear_model.LinearRegression`) includes parameters `copy_X` (bool), `n_jobs` (int), and `positive` (bool), representing whether copying input feature or not, the number of jobs to use for the computation, and whether forcing the coefficients to be positive, respectively. We ignore these parameters in our implementation.
 
@@ -60,7 +60,7 @@ From a **research** standpoint, having a clear and flexible backbone implementat
     |                          |                                                |
     |                          |                                                |
 
-2. Unsupervised:
+1. Unsupervised:
 
     | model name               | API                                            |
     |--------------------------|------------------------------------------------|
@@ -73,7 +73,7 @@ From a **research** standpoint, having a clear and flexible backbone implementat
    cd [DownloadFolder]
    ```
 
-2. Install the package by running
+1. Install the package by running
    ```bash
    pip install miniml
    ```
