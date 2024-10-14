@@ -40,9 +40,25 @@ This project aims to provide a backbone implementation of the key machine learni
 
 ## Supported algorithms
 
-1. Supervised: k-nearest neighbors, decision tree regressor, decision tree classifier, random forest classifier, linear regression, sgd regression.
+1. Supervised:
 
-2. Unsupervised: k-means.
+    | model name               | API                                            |
+    |--------------------------|------------------------------------------------|
+    | k-nearest neighbors      | miniml.sklearn.neighbors.KNeighborsClassifier  |
+    | decision tree classifier | miniml.sklearn.tree.DecisionTreeClassifier     |
+    | decision tree regressor  | miniml.sklearn.tree.DecisionTreeRegressor      |
+    | random forest classifier | miniml.sklearn.ensemble.RandomForestClassifier |
+    | random forest regressor  | miniml.sklearn.ensemble.RandomForestRegressor  |
+    | linear regression        | miniml.sklearn.linear_model.LinearRegressor    |
+    | SGD regression           | miniml.sklearn.linear_model.SGDRegressor       |
+    |                          |                                                |
+    |                          |                                                |
+
+2. Unsupervised:
+
+    | model name               | API                                            |
+    |--------------------------|------------------------------------------------|
+    | k-means                  | miniml.sklearn.cluster.KMeans                  |
 
 ## Installation
 1. Change the directory to the folder that contains the mini-ml folder.
