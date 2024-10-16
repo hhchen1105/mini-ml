@@ -38,7 +38,7 @@ From a **research** standpoint, having a clear and flexible backbone implementat
 
 1. Readability over efficiency
 
-    - This project is mainly for educational purposes. Thus, we value code readability over code efficiency.
+    - This project is mainly for educational and research purposes. Thus, we value code readability over code efficiency.
 
 1. Good design demands reasonable compromises
 
