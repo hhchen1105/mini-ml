@@ -57,7 +57,7 @@ From a **research** standpoint, having a clear and flexible backbone implementat
     | random forest regressor  | miniml.sklearn.ensemble.RandomForestRegressor  |
     | linear regression        | miniml.sklearn.linear_model.LinearRegressor    |
     | SGD regression           | miniml.sklearn.linear_model.SGDRegressor       |
-    |                          |                                                |
+    | Ridge regression         | miniml.sklearn.linear_model.Ridge              |
     |                          |                                                |
 
 1. Unsupervised:
