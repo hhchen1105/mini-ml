@@ -48,23 +48,23 @@ From a **research** standpoint, having a clear and flexible backbone implementat
 
 1. Supervised:
 
-    | model name               | API                                            |
-    |--------------------------|------------------------------------------------|
-    | k-nearest neighbors      | miniml.sklearn.neighbors.KNeighborsClassifier  |
-    | decision tree classifier | miniml.sklearn.tree.DecisionTreeClassifier     |
-    | decision tree regressor  | miniml.sklearn.tree.DecisionTreeRegressor      |
-    | random forest classifier | miniml.sklearn.ensemble.RandomForestClassifier |
-    | random forest regressor  | miniml.sklearn.ensemble.RandomForestRegressor  |
-    | linear regression        | miniml.sklearn.linear_model.LinearRegressor    |
-    | SGD regression           | miniml.sklearn.linear_model.SGDRegressor       |
-    | Ridge regression         | miniml.sklearn.linear_model.Ridge              |
-    |                          |                                                |
+    | model name               | API                                            | key concept
+    |--------------------------|------------------------------------------------|-------------
+    | k-nearest neighbors      | miniml.sklearn.neighbors.KNeighborsClassifier  | Classifies a data point based on the majority class of its k-nearest neighbors.
+    | decision tree classifier | miniml.sklearn.tree.DecisionTreeClassifier     | Builds a decision tree by recursively splitting the data based on feature values to classify data.
+    | decision tree regressor  | miniml.sklearn.tree.DecisionTreeRegressor      | Builds a decision tree that predicts continuous values by splitting the data recursively.
+    | random forest classifier | miniml.sklearn.ensemble.RandomForestClassifier | An ensemble of decision trees where each tree votes, and the majority vote is the final classification.
+    | random forest regressor  | miniml.sklearn.ensemble.RandomForestRegressor  | An ensemble of decision trees used to predict continuous values by averaging predictions from multiple trees.
+    | linear regression        | miniml.sklearn.linear_model.LinearRegressor    | Predicts a continuous target value by fitting a linear relationship between input features and the target.
+    | SGD regression           | miniml.sklearn.linear_model.SGDRegressor       | Performs linear regression using Stochastic Gradient Descent for optimization.
+    | Ridge regression         | miniml.sklearn.linear_model.Ridge              | A variation of linear regression that includes L2 regularization to prevent overfitting.
+    | Lasso regression         | miniml.sklearn.linear_model.Lasso              | A variation of linear regression that includes L1 regularization to promote sparse feature selection.
 
 1. Unsupervised:
 
-    | model name               | API                                            |
-    |--------------------------|------------------------------------------------|
-    | k-means                  | miniml.sklearn.cluster.KMeans                  |
+    | model name               | API                                            | key concept
+    |--------------------------|------------------------------------------------|----------------
+    | k-means                  | miniml.sklearn.cluster.KMeans                  | Partitions the data into k clusters by iteratively assigning data points to the nearest cluster center and updating the cluster centers based on the mean of the points in each cluster.
 
 ## Installation
 1. Change the directory to the folder that contains the mini-ml folder.
