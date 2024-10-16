@@ -16,9 +16,6 @@ class Ridge:
         else:
             self.intercept_ = 0.0
 
-        self.X_mean_ = np.zeros(X.shape[1])
-        self.X_std_ = np.ones(X.shape[1])
-
         U, s, Vt = np.linalg.svd(X, full_matrices=False)
         d = s / (s**2 + self.alpha)
         self.coef_ = np.dot(Vt.T, d * np.dot(U.T, y))
