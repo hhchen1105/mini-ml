@@ -55,11 +55,11 @@ From a **research** standpoint, having a clear and flexible backbone implementat
     | decision tree regressor  | miniml.sklearn.tree.DecisionTreeRegressor      | Builds a decision tree that predicts continuous values by splitting the data recursively.
     | random forest classifier | miniml.sklearn.ensemble.RandomForestClassifier | An ensemble of decision trees where each tree votes, and the majority vote is the final classification.
     | random forest regressor  | miniml.sklearn.ensemble.RandomForestRegressor  | An ensemble of decision trees used to predict continuous values by averaging predictions from multiple trees.
-    | linear regression        | miniml.sklearn.linear_model.LinearRegressor    | Predicts a continuous target value by fitting a linear relationship between input features and the target.
+    | linear regression        | miniml.sklearn.linear_model.LinearRegressor    | Predicts a continuous target value by fitting a linear relationship between input features and the target. It solves for the regression coefficients by using the pseudo-inverse of the feature matrix, computed via Singular Value Decomposition (SVD)
     | SGD regression           | miniml.sklearn.linear_model.SGDRegressor       | Performs linear regression using Stochastic Gradient Descent for optimization.
-    | Ridge regression         | miniml.sklearn.linear_model.Ridge              | A variation of linear regression that includes L2 regularization to prevent overfitting.
-    | Lasso regression         | miniml.sklearn.linear_model.Lasso              | A variation of linear regression that includes L1 regularization to promote sparse feature selection.
-    | ElasticNet regression    | miniml.sklearn.linear_model.ElasticNet         | A linear regression model that combines both L1 (Lasso) and L2 (Ridge) regularization to improve prediction accuracy and model interpretability by balancing feature selection (sparsity) and coefficient shrinkage
+    | Ridge regression         | miniml.sklearn.linear_model.Ridge              | A variation of linear regression that includes L2 regularization to prevent overfitting. It solves for the regression coefficients using the pseudo-inverse of the regularized feature matrix, computed via Singular Value Decomposition (SVD).
+    | Lasso regression         | miniml.sklearn.linear_model.Lasso              | A variation of linear regression that includes L1 regularization to promote sparse feature selection. It is solved using coordinate descent.
+    | ElasticNet regression    | miniml.sklearn.linear_model.ElasticNet         | A linear regression model that combines both L1 (Lasso) and L2 (Ridge) regularization to improve prediction accuracy and model interpretability by balancing feature selection (sparsity) and coefficient shrinkage. It is solved using coordinate descent.
 
 1. Unsupervised:
 
