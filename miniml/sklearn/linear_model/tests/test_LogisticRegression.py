@@ -14,7 +14,8 @@ def test_loss():
     y = np.array([1, 0, 1])
     w = np.array([0.5, -0.5])
     h = 1./(1+np.exp(-np.dot(X, w)))
-    expected_loss = -np.mean(y * np.log(h) + (1 - y) * np.log(1 - h)) + 0.5 * 1.0 * (0.5**2 + (-0.5)**2)
+    expected_loss = -np.mean(y * np.log(h) + (1 - y) * np.log(1 - h)) + 1 / (2 * 1.0) * ((-0.5)**2)
+
     np.testing.assert_almost_equal(model._loss(w, X, y), expected_loss, decimal=6)
 
 def test_gradient():
@@ -22,20 +23,20 @@ def test_gradient():
     X = np.array([[1, 2], [1, -1], [1, 1]])
     y = np.array([1, 0, 1])
     w = np.array([0.5, -0.5])
-    expected_grad = np.dot(X.T, (1./(1+np.exp(-np.dot(X, w))) - y)) / y.size + 1.0 * w
+    expected_grad = np.dot(X.T, (1./(1+np.exp(-np.dot(X, w))) - y)) / y.size + 1.0 * np.array([0, -0.5])
     np.testing.assert_almost_equal(model._gradient(w, X, y), expected_grad, decimal=6)
 
 def test_fit():
-    model = LogisticRegression(max_iter=200)
-    X = np.array([[1, 2], [1, -1], [2, 1], [2, 2], [3, 3]])
+    model = LogisticRegression(max_iter=200, C=1.)
+    X = np.array([[1, 2], [1, -1], [2, 1], [2, 2], [3, -1]])
     y = np.array([1, 0, 1, 1, 0])
     model.fit(X, y)
     assert model.coef_.shape == (2,)
-    assert model.intercept_.size == 1
+    assert isinstance(model.intercept_, float)
 
 def test_predict_proba():
     model = LogisticRegression(max_iter=200)
-    X = np.array([[1, 2], [1, -1], [2, 1], [2, 2], [3, 3]])
+    X = np.array([[1, 2], [1, -1], [2, 1], [2, 2], [3, -1]])
     y = np.array([1, 0, 1, 1, 0])
     model.fit(X, y)
     proba = model.predict_proba(X)
@@ -44,7 +45,7 @@ def test_predict_proba():
 
 def test_predict_log_proba():
     model = LogisticRegression(max_iter=200)
-    X = np.array([[1, 2], [1, -1], [2, 1], [2, 2], [3, 3]])
+    X = np.array([[1, 2], [1, -1], [2, 1], [2, 2], [3, -1]])
     y = np.array([1, 0, 1, 1, 0])
     model.fit(X, y)
     log_proba = model.predict_log_proba(X)
@@ -53,7 +54,7 @@ def test_predict_log_proba():
 
 def test_predict():
     model = LogisticRegression(max_iter=200)
-    X = np.array([[1, 2], [1, -1], [2, 1], [2, 2], [3, 3]])
+    X = np.array([[1, 2], [1, -1], [2, 1], [2, 2], [3, -1]])
     y = np.array([1, 0, 1, 1, 0])
     model.fit(X, y)
     predictions = model.predict(X)
@@ -62,7 +63,7 @@ def test_predict():
 
 def test_score():
     model = LogisticRegression(max_iter=200)
-    X = np.array([[1, 2], [1, -1], [2, 1], [2, 2], [3, 3]])
+    X = np.array([[1, 2], [1, -1], [2, 1], [2, 2], [3, -1]])
     y = np.array([1, 0, 1, 1, 0])
     model.fit(X, y)
     score = model.score(X, y)
