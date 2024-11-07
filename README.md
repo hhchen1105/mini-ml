@@ -60,7 +60,8 @@ From a **research** standpoint, having a clear and flexible backbone implementat
     | Ridge regression         | miniml.sklearn.linear_model.Ridge              | A variation of linear regression that includes L2 regularization to prevent overfitting. It solves for the regression coefficients using the pseudo-inverse of the regularized feature matrix, computed via Singular Value Decomposition (SVD).
     | Lasso regression         | miniml.sklearn.linear_model.Lasso              | A variation of linear regression that includes L1 regularization to promote sparse feature selection. It is solved using coordinate descent.
     | ElasticNet regression    | miniml.sklearn.linear_model.ElasticNet         | A linear regression model that combines both L1 (Lasso) and L2 (Ridge) regularization to improve prediction accuracy and model interpretability by balancing feature selection (sparsity) and coefficient shrinkage. It is solved using coordinate descent.
-    | Logistic regression      | miniml.sklearn.linear_model.LogisticRegression |  A classification algorithm that models the probability of a binary outcome (0/1) using a logistic function. It is solved using L-BFGS.
+    | logistic regression      | miniml.sklearn.linear_model.LogisticRegression |  A classification algorithm that models the probability of a binary outcome (0/1) using a logistic function. It is solved using L-BFGS.
+    | gradient boosting regression | miniml.sklearn.ensemble.GradientBoostingRegressor | An ensemble learning method that builds a series of decision trees sequentially, where each new tree corrects the errors of the previous ones. It optimizes the model by minimizing the residual errors through gradient descent.
 
 1. Unsupervised:
 
