@@ -70,15 +70,20 @@ From a **research** standpoint, having a clear and flexible backbone implementat
     | k-means                  | miniml.sklearn.cluster.KMeans                  | Partitions the data into k clusters by iteratively assigning data points to the nearest cluster center and updating the cluster centers based on the mean of the points in each cluster.
 
 ## Installation
-1. Change the directory to the folder that contains the mini-ml folder.
+1. Change the directory to the `mini-ml` folder.
 
    ```bash
-   cd [DownloadFolder]
+   cd mini-ml
    ```
 
 1. Install the package by running
    ```bash
    pip install miniml
+   ```
+
+1. If you want to develop the package without reinstallation, run
+   ```bash
+   pip install -e .
    ```
 
 ## Contribution
