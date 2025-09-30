@@ -6,4 +6,9 @@ __all__ = [
         'RandomForestClassifier',
         'RandomForestRegressor',
         'GradientBoostingRegressor',
+        'GradientBoostingClassifier',
+        'BaggingClassifier',
+        'BaggingRegressor',
+        'ExtraTreesClassifier',
+        'ExtraTreesRegressor',
         ]
