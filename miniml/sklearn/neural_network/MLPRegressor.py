@@ -54,13 +54,12 @@ class MLPRegressor:
         y = np.asarray(y).reshape(-1, 1)
 
         n_samples, n_features = X.shape
-        n_outputs = y.shape[1] #?
+        n_outputs = y.shape[1]
         self._initialize_weights(n_features, n_outputs)
 
         for epoch in range(self.max_iter):
             for sample_index in range(len(X)):
                 activations = self._forward(X[sample_index])
-                loss = np.mean((activations[-1] - y[sample_index]) ** 2) # 是要跟目前處理的這筆y比較
                 grads_W, grads_b = self._backward(activations, y[sample_index])
 
                 for i in range(len(self.weights)):
