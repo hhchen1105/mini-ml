@@ -165,9 +165,62 @@ class ExtraTreeClassifier:
         return counts / len(y)
 
     def predict(self, X):
-        """Predict class labels (to be implemented by member B)."""
-        raise NotImplementedError("predict() method not yet implemented.")
+            """
+            預測 X 中樣本的類別標籤。
 
+            參數:
+            ----------
+            X : array-like, shape (n_samples, n_features)
+                要預測的樣本。
+
+            返回:
+            -------
+            y_pred : array, shape (n_samples,)
+                預測的類別標籤。
+            """
+            # 1. 檢查模型是否已經訓練過
+            if not self.is_fitted_:
+                raise RuntimeError("This ExtraTreeClassifier instance is not fitted yet. "
+                                "Call 'fit' with appropriate arguments before using this estimator.")
+
+            # 2. 確保 X 是 numpy 陣列
+            X = np.asarray(X)
+
+            # 3. 遍歷 X 中的每一個樣本，並使用 _traverse_tree 輔助函式進行預測
+            predictions = [self._traverse_tree(sample, self.tree_) for sample in X]
+            
+            return np.array(predictions)
+
+    def _traverse_tree(self, sample, node):
+        """
+        (輔助函式) 為單個樣本遞迴遍歷樹，並返回預測的類別。
+
+        參數:
+        ----------
+        sample : array, shape (n_features,)
+            單個輸入樣本。
+        node : dict
+            當前的樹節點 (來自 self.tree_)。
+
+        返回:
+        -------
+        class_label : 
+            預測的類別標籤。
+        """
+        # 基線條件 (Base case): 如果這是一個葉節點
+        if node["leaf"]:
+            # "value" 儲存的是各類別的機率分佈
+            # 我們找到機率最高的那個類別的索引
+            predicted_index = np.argmax(node["value"])
+            # 使用 self.classes_ 將索引轉換回原始的類別標籤
+            return self.classes_[predicted_index]
+
+        # 遞迴條件 (Recursive case): 如果這是一個內部節點
+        # 檢查樣本的特徵值並決定往左或往右
+        if sample[node["feature"]] < node["threshold"]:
+            return self._traverse_tree(sample, node["left"])
+        else:
+            return self._traverse_tree(sample, node["right"])
     def predict_proba(self, X):
         """Predict class probabilities (to be implemented by member C)."""
         raise NotImplementedError("predict_proba() method not yet implemented.")
