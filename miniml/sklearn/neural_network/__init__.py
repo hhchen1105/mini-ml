@@ -1,5 +1,5 @@
 from .BernoulliRBM import BernoulliRBM
 from .MLPRegressor import MLPRegressor
 
-all = ['BernoulliRBM',
-      'MLPRegressor']
+__all__ = ['BernoulliRBM',
+            'MLPRegressor']
