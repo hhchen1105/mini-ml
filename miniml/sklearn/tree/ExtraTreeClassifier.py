@@ -185,6 +185,13 @@ class ExtraTreeClassifier:
 
             # 2. 確保 X 是 numpy 陣列
             X = np.asarray(X)
+            if X.ndim == 1:
+                X = X.reshape(1, -1)
+
+            if X.shape[1] != self.n_features_:
+                raise ValueError(
+                    f"輸入特徵數 ({X.shape[1]}) 與訓練時的特徵數 ({self.n_features_}) 不相符。"
+                )
 
             # 3. 遍歷 X 中的每一個樣本，並使用 _traverse_tree 輔助函式進行預測
             predictions = [self._traverse_tree(sample, self.tree_) for sample in X]
@@ -221,7 +228,44 @@ class ExtraTreeClassifier:
             return self._traverse_tree(sample, node["left"])
         else:
             return self._traverse_tree(sample, node["right"])
+
+            
     def predict_proba(self, X):
-        """Predict class probabilities (to be implemented by member C)."""
-        raise NotImplementedError("predict_proba() method not yet implemented.")
+        """
+        預測輸入樣本在每個類別的機率分佈。
+
+        參數:
+        ----------
+        X : array-like, shape (n_samples, n_features) 或 (n_features,)
+            要預測的樣本。如果是一維陣列，視為單一樣本。
+
+        返回:
+        -------
+        proba : array, shape (n_samples, n_classes)
+            每個樣本對所有類別的預測機率，行向量和為 1。
+        """
+        if not self.is_fitted_:
+            raise ValueError("模型尚未訓練，請先呼叫 fit()。")
+
+        X = np.asarray(X)
+        if X.ndim == 1:
+            X = X.reshape(1, -1)
+
+        if X.shape[1] != self.n_features_:
+            raise ValueError(
+                f"輸入特徵數 ({X.shape[1]}) 與訓練時的特徵數 ({self.n_features_}) 不相符。"
+            )
+
+        probas = [self._traverse_tree_proba(sample, self.tree_) for sample in X]
+        return np.vstack(probas)
+
+    def _traverse_tree_proba(self, sample, node):
+        """輔助函式：返回樣本落在葉節點時的類別機率。"""
+        if node["leaf"]:
+            # 回傳一份複製，避免外部修改內部節點的分佈
+            return np.array(node["value"], copy=True)
+
+        if sample[node["feature"]] < node["threshold"]:
+            return self._traverse_tree_proba(sample, node["left"])
+        return self._traverse_tree_proba(sample, node["right"])
    

@@ -1,5 +1,6 @@
 .envrc
 .DS_Store
+.venv/
 *.pyc
 build/
 miniml.egg-info/
