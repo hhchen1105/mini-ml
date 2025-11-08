@@ -1,271 +1,169 @@
 import numpy as np
 
-class ExtraTreeClassifier:
-    """
-    一個極度隨機樹分類器 (Extra-Tree Classifier) 的簡化實作。
 
-    這個分類器在建立樹的過程中，會隨機選擇特徵和隨機選擇分割點
-    來增加隨機性，這有助於減少 variance。
+class ExtraTreeClassifier:
+    """極度隨機樹分類器 (Extra-Tree Classifier) 的簡化實作。
+
+    在每個節點：
+    1. 隨機抽樣若干特徵 (由 max_features 控制，預設 'sqrt')。
+    2. 從該特徵的相鄰唯一值中點集合中隨機抽一個 threshold。
+    3. 選擇造成加權 Gini 不純度最小的分割。
 
     參數:
     ----------
-    max_depth : int, 預設=None
-        樹的最大深度。如果為 None，則節點將一直擴展，直到所有葉子都是純的
-        或者直到所有葉子包含的樣本數少於 min_samples_split。
-
-    min_samples_split : int, 預設=2
-        分割一個內部節點所需的最少樣本數。
-
-    min_samples_leaf : int, 預設=1
-        一個葉節點上所需的最小樣本數。
-
-    random_state : int, 預設=None
-        用於控制隨機性的種子。
+    max_depth : int | None, default=None
+    min_samples_split : int, default=2
+    min_samples_leaf : int, default=1
+    max_features : int | str | None, default='sqrt'
+    random_state : int | None, default=None
     """
 
-    def __init__(self, max_depth=None, min_samples_split=2, min_samples_leaf=1, random_state=None):
+    def __init__(self, max_depth=None, min_samples_split=2, min_samples_leaf=1, max_features='sqrt', random_state=None):
         self.max_depth = max_depth
         self.min_samples_split = min_samples_split
         self.min_samples_leaf = min_samples_leaf
+        self.max_features = max_features
         self.random_state = random_state
-        self.rng = np.random.default_rng(random_state) # 隨機數生成器
+        self.rng = np.random.default_rng(random_state)
+
         self.tree_ = None
         self.classes_ = None
         self.n_classes_ = None
         self.n_features_ = None
-        self.is_fitted_ = False # 在初始化時設定為 False
+        self.is_fitted_ = False
+        self._last_n_tries = None
 
     def fit(self, X, y):
-        """
-        從訓練資料 (X, y) 建立一個 Extra-Tree 分類器。
+        X = np.asarray(X)
+        y = np.asarray(y)
+        if X.ndim != 2:
+            raise ValueError("X must be 2D.")
+        if y.ndim != 1:
+            raise ValueError("y must be 1D.")
+        if X.shape[0] != y.shape[0]:
+            raise ValueError("X and y have different number of samples.")
+        if self.min_samples_split < 2:
+            raise ValueError("min_samples_split must be >=2")
+        if self.min_samples_leaf < 1:
+            raise ValueError("min_samples_leaf must be >=1")
 
-        參數:
-        ----------
-        X : array-like, shape (n_samples, n_features)
-            訓練輸入樣本。
-        y : array-like, shape (n_samples,)
-            目標類別標籤。
-        """
         self.classes_ = np.unique(y)
         self.n_classes_ = len(self.classes_)
         self.n_features_ = X.shape[1]
-        
-        # 為了方便計算葉節點的值，我們將 y 轉換為 0 到 n_classes-1 的索引
-        y_encoded = np.searchsorted(self.classes_, y)
-        
-        self.tree_ = self._build_tree(X, y_encoded, depth=0)
-        self.is_fitted_ = True # 在 fit 成功後設定為 True
+        y_enc = np.searchsorted(self.classes_, y)
+        self.tree_ = self._build_tree(X, y_enc, depth=0)
+        self.is_fitted_ = True
         return self
 
     def _build_tree(self, X, y, depth):
-        """遞迴建立樹"""
-        n_samples, n_features = X.shape
+        n_samples = X.shape[0]
         n_labels = len(np.unique(y))
+        if (
+            (self.max_depth is not None and depth >= self.max_depth)
+            or (n_samples < self.min_samples_split)
+            or (n_samples < self.min_samples_leaf * 2)
+            or (n_labels == 1)
+        ):
+            return {"leaf": True, "value": self._calculate_leaf_value(y)}
 
-        # 停止條件 (Stopping criteria)
-        if (self.max_depth is not None and depth >= self.max_depth) or \
-           (n_samples < self.min_samples_split) or \
-           (n_samples < self.min_samples_leaf * 2) or \
-           (n_labels == 1):
-            
-            # 建立葉節點
-            leaf_value = self._calculate_leaf_value(y)
-            return {"leaf": True, "value": leaf_value}
+        feat_idx, threshold = self._find_random_split(X, y, n_samples)
+        if feat_idx is None:
+            return {"leaf": True, "value": self._calculate_leaf_value(y)}
 
-        # 尋找一個隨機的分割
-        feature_idx, threshold = self._find_random_split(X, y, n_samples)
-
-        # 如果找不到有效的分割
-        if feature_idx is None:
-            leaf_value = self._calculate_leaf_value(y)
-            return {"leaf": True, "value": leaf_value}
-
-        # 分割資料
-        left_indices = X[:, feature_idx] < threshold
-        right_indices = ~left_indices
-        
-        X_left, y_left = X[left_indices], y[left_indices]
-        X_right, y_right = X[right_indices], y[right_indices]
-
-        # 檢查是否滿足 min_samples_leaf
+        left_mask = X[:, feat_idx] < threshold
+        right_mask = ~left_mask
+        X_left, y_left = X[left_mask], y[left_mask]
+        X_right, y_right = X[right_mask], y[right_mask]
         if len(y_left) < self.min_samples_leaf or len(y_right) < self.min_samples_leaf:
-            leaf_value = self._calculate_leaf_value(y)
-            return {"leaf": True, "value": leaf_value}
-
-        # 遞迴建立左右子樹
-        left_child = self._build_tree(X_left, y_left, depth + 1)
-        right_child = self._build_tree(X_right, y_right, depth + 1)
-
+            return {"leaf": True, "value": self._calculate_leaf_value(y)}
         return {
             "leaf": False,
-            "feature": feature_idx,
+            "feature": feat_idx,
             "threshold": threshold,
-            "left": left_child,
-            "right": right_child
+            "left": self._build_tree(X_left, y_left, depth + 1),
+            "right": self._build_tree(X_right, y_right, depth + 1),
         }
 
     def _find_random_split(self, X, y, n_samples):
-        """
-        尋找最佳的「隨機」分割點。
-        這會嘗試 n_features_ 次隨機特徵和隨機閾值。
-        """
         best_gini = 1.0
-        best_split = (None, None)
-        n_tries = self.n_features_ # 嘗試次數，可以調整 (例如 sqrt(n_features))
-
-        # 隨機選擇要嘗試的特徵
-        feature_indices = self.rng.choice(self.n_features_, n_tries, replace=True)
-
-        for feat_idx in feature_indices:
-            X_col = X[:, feat_idx]
-            min_val, max_val = np.min(X_col), np.max(X_col)
-
-            # 如果特徵值都相同，無法分割
-            if min_val == max_val:
+        best = (None, None)
+        if self.max_features is None:
+            n_try = self.n_features_
+        elif isinstance(self.max_features, str):
+            if self.max_features == 'sqrt':
+                n_try = max(1, int(np.sqrt(self.n_features_)))
+            else:
+                raise ValueError("Unsupported max_features string.")
+        elif isinstance(self.max_features, int):
+            if self.max_features < 1:
+                raise ValueError("max_features int must be >=1")
+            n_try = min(self.max_features, self.n_features_)
+        else:
+            raise ValueError("max_features must be int | str | None")
+        self._last_n_tries = n_try
+        feats = self.rng.choice(self.n_features_, n_try, replace=False)
+        for f in feats:
+            col = X[:, f]
+            uniq = np.unique(col)
+            if uniq.size <= 1:
                 continue
-
-            # 隨機選擇一個閾值
-            threshold = self.rng.uniform(min_val, max_val)
-
-            # 計算 Gini 不純度
-            left_indices = X_col < threshold
-            y_left = y[left_indices]
-            y_right = y[~left_indices]
-
-            # 如果一邊為空，這不是一個好的分割
+            mids = (uniq[:-1] + uniq[1:]) / 2
+            thr = self.rng.choice(mids)
+            left = col < thr
+            y_left = y[left]
+            y_right = y[~left]
             if len(y_left) == 0 or len(y_right) == 0:
                 continue
-
-            gini = (len(y_left) * self._gini(y_left) + len(y_right) * self._gini(y_right)) / n_samples
-            
-            if gini < best_gini:
-                best_gini = gini
-                best_split = (feat_idx, threshold)
-        
-        return best_split
+            g = (len(y_left) * self._gini(y_left) + len(y_right) * self._gini(y_right)) / n_samples
+            if g < best_gini:
+                best_gini = g
+                best = (f, thr)
+        return best
 
     def _gini(self, y):
-        """計算 Gini 不純度"""
-        n_samples = len(y)
-        if n_samples == 0:
+        if len(y) == 0:
             return 0.0
-        
-        _, counts = np.unique(y, return_counts=True)
-        probabilities = counts / n_samples
-        return 1.0 - np.sum(probabilities**2)
+        _, c = np.unique(y, return_counts=True)
+        p = c / len(y)
+        return 1 - np.sum(p ** 2)
 
     def _calculate_leaf_value(self, y):
-        """計算葉節點的類別機率分佈"""
-        # 確保 y 不為空，如果為空則返回一個均勻分佈
         if len(y) == 0:
             return np.ones(self.n_classes_) / self.n_classes_
-
-        # y 已經是 0 到 n_classes-1 的編碼
         counts = np.bincount(y, minlength=self.n_classes_)
         return counts / len(y)
 
     def predict(self, X):
-            """
-            預測 X 中樣本的類別標籤。
-
-            參數:
-            ----------
-            X : array-like, shape (n_samples, n_features)
-                要預測的樣本。
-
-            返回:
-            -------
-            y_pred : array, shape (n_samples,)
-                預測的類別標籤。
-            """
-            # 1. 檢查模型是否已經訓練過
-            if not self.is_fitted_:
-                raise RuntimeError("This ExtraTreeClassifier instance is not fitted yet. "
-                                "Call 'fit' with appropriate arguments before using this estimator.")
-
-            # 2. 確保 X 是 numpy 陣列
-            X = np.asarray(X)
-            if X.ndim == 1:
-                X = X.reshape(1, -1)
-
-            if X.shape[1] != self.n_features_:
-                raise ValueError(
-                    f"輸入特徵數 ({X.shape[1]}) 與訓練時的特徵數 ({self.n_features_}) 不相符。"
-                )
-
-            # 3. 遍歷 X 中的每一個樣本，並使用 _traverse_tree 輔助函式進行預測
-            predictions = [self._traverse_tree(sample, self.tree_) for sample in X]
-            
-            return np.array(predictions)
-
-    def _traverse_tree(self, sample, node):
-        """
-        (輔助函式) 為單個樣本遞迴遍歷樹，並返回預測的類別。
-
-        參數:
-        ----------
-        sample : array, shape (n_features,)
-            單個輸入樣本。
-        node : dict
-            當前的樹節點 (來自 self.tree_)。
-
-        返回:
-        -------
-        class_label : 
-            預測的類別標籤。
-        """
-        # 基線條件 (Base case): 如果這是一個葉節點
-        if node["leaf"]:
-            # "value" 儲存的是各類別的機率分佈
-            # 我們找到機率最高的那個類別的索引
-            predicted_index = np.argmax(node["value"])
-            # 使用 self.classes_ 將索引轉換回原始的類別標籤
-            return self.classes_[predicted_index]
-
-        # 遞迴條件 (Recursive case): 如果這是一個內部節點
-        # 檢查樣本的特徵值並決定往左或往右
-        if sample[node["feature"]] < node["threshold"]:
-            return self._traverse_tree(sample, node["left"])
-        else:
-            return self._traverse_tree(sample, node["right"])
-
-            
-    def predict_proba(self, X):
-        """
-        預測輸入樣本在每個類別的機率分佈。
-
-        參數:
-        ----------
-        X : array-like, shape (n_samples, n_features) 或 (n_features,)
-            要預測的樣本。如果是一維陣列，視為單一樣本。
-
-        返回:
-        -------
-        proba : array, shape (n_samples, n_classes)
-            每個樣本對所有類別的預測機率，行向量和為 1。
-        """
         if not self.is_fitted_:
-            raise ValueError("模型尚未訓練，請先呼叫 fit()。")
-
+            raise RuntimeError("Estimator not fitted.")
         X = np.asarray(X)
         if X.ndim == 1:
             X = X.reshape(1, -1)
-
         if X.shape[1] != self.n_features_:
-            raise ValueError(
-                f"輸入特徵數 ({X.shape[1]}) 與訓練時的特徵數 ({self.n_features_}) 不相符。"
-            )
+            raise ValueError("Feature mismatch.")
+        return np.array([self._traverse_tree(row, self.tree_) for row in X])
 
-        probas = [self._traverse_tree_proba(sample, self.tree_) for sample in X]
-        return np.vstack(probas)
+    def _traverse_tree(self, sample, node):
+        if node["leaf"]:
+            idx = int(np.argmax(node["value"]))
+            return self.classes_[idx]
+        if sample[node["feature"]] < node["threshold"]:
+            return self._traverse_tree(sample, node["left"])
+        return self._traverse_tree(sample, node["right"])
+
+    def predict_proba(self, X):
+        if not self.is_fitted_ or self.tree_ is None:
+            raise ValueError("Estimator not fitted.")
+        X = np.asarray(X)
+        if X.ndim == 1:
+            X = X.reshape(1, -1)
+        if X.shape[1] != self.n_features_:
+            raise ValueError("Feature mismatch.")
+        return np.vstack([self._traverse_tree_proba(row, self.tree_) for row in X])
 
     def _traverse_tree_proba(self, sample, node):
-        """輔助函式：返回樣本落在葉節點時的類別機率。"""
         if node["leaf"]:
-            # 回傳一份複製，避免外部修改內部節點的分佈
-            return np.array(node["value"], copy=True)
-
+            return np.asarray(node["value"], dtype=float)
         if sample[node["feature"]] < node["threshold"]:
             return self._traverse_tree_proba(sample, node["left"])
         return self._traverse_tree_proba(sample, node["right"])
-   

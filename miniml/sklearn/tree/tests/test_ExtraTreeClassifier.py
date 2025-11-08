@@ -82,3 +82,85 @@ def test_predict_accepts_1d_sample():
     clf.fit(X, y)
     pred = clf.predict(np.array([1.5, 2.5]))  # 1D 單一樣本
     assert pred.shape == (1,)
+
+
+def test_repeatability_with_same_random_state(iris_data):
+    # 同一個 random_state，重複 fit，預測/機率應一致（穩定性）
+    X_train, X_test, y_train, _ = iris_data
+
+    clf1 = ExtraTreeClassifier(random_state=123, max_depth=10)
+    clf1.fit(X_train, y_train)
+    y_pred1 = clf1.predict(X_test)
+    proba1 = clf1.predict_proba(X_test)
+
+    clf2 = ExtraTreeClassifier(random_state=123, max_depth=10)
+    clf2.fit(X_train, y_train)
+    y_pred2 = clf2.predict(X_test)
+    proba2 = clf2.predict_proba(X_test)
+
+    assert np.array_equal(y_pred1, y_pred2)
+    assert np.allclose(proba1, proba2)
+
+
+def test_multiple_calls_return_same_results(iris_data):
+    # 同一個模型、同一筆資料，多次呼叫 predict/predict_proba 應得到相同結果
+    X_train, X_test, y_train, _ = iris_data
+    clf = ExtraTreeClassifier(random_state=7, max_depth=8)
+    clf.fit(X_train, y_train)
+
+    y_pred_a = clf.predict(X_test)
+    y_pred_b = clf.predict(X_test)
+    assert np.array_equal(y_pred_a, y_pred_b)
+
+    proba_a = clf.predict_proba(X_test)
+    proba_b = clf.predict_proba(X_test)
+    assert np.allclose(proba_a, proba_b)
+
+
+def test_different_random_states_can_change_predictions(iris_data):
+    # 不同 random_state 應可能導致不同的模型與預測（顯示隨機性影響）
+    X_train, X_test, y_train, _ = iris_data
+
+    seeds = [0, 1, 2, 3, 4]
+    preds = []
+    probas = []
+    for s in seeds:
+        clf = ExtraTreeClassifier(random_state=s, max_depth=2)
+        clf.fit(X_train, y_train)
+        y_pred = clf.predict(X_test)
+        preds.append(tuple(y_pred.tolist()))
+        proba = clf.predict_proba(X_test)
+        # 將機率攤平成一維並四捨五入，避免浮點微小差異造成不必要的唯一化
+        probas.append(tuple(np.round(proba.ravel(), 6).tolist()))
+
+    unique_pred_count = len(set(preds))
+    unique_proba_count = len(set(probas))
+
+    # 允許其中一者顯示差異即可，降低測試易碎性
+    assert unique_pred_count >= 2 or unique_proba_count >= 2
+
+
+def test_max_features_controls_try_count():
+    # 使用 5 維人工資料，檢查 _last_n_tries 反映 max_features 設定
+    rng = np.random.default_rng(0)
+    X = rng.normal(size=(50, 5))
+    y = (X[:, 0] + X[:, 1] > 0).astype(int)
+
+    # max_features=None -> 嘗試全部特徵
+    clf_all = ExtraTreeClassifier(random_state=0, max_features=None, max_depth=2)
+    clf_all.fit(X, y)
+    # 觸發一次 split，使 _last_n_tries 記錄本節點嘗試數
+    _ = clf_all.predict(X[:3])
+    assert clf_all._last_n_tries == 5
+
+    # max_features='sqrt' -> floor(sqrt(5))=2
+    clf_sqrt = ExtraTreeClassifier(random_state=0, max_features='sqrt', max_depth=2)
+    clf_sqrt.fit(X, y)
+    _ = clf_sqrt.predict(X[:3])
+    assert clf_sqrt._last_n_tries == 2
+
+    # max_features=3 -> 至多 3
+    clf_int = ExtraTreeClassifier(random_state=0, max_features=3, max_depth=2)
+    clf_int.fit(X, y)
+    _ = clf_int.predict(X[:3])
+    assert clf_int._last_n_tries == 3
