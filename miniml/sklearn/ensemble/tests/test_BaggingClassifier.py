@@ -3,8 +3,8 @@ import numpy as np
 from miniml.sklearn.ensemble.BaggingClassifier import BaggingClassifier
 
 # import base estimators for testing
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.svm import SVC
+from miniml.sklearn.tree import DecisionTreeClassifier
+from miniml.sklearn.linear_model import Ridge
 
 # import dataset for testing
 from sklearn.datasets import load_iris
@@ -74,7 +74,7 @@ def test_bagging_classifier_predict_proba_hard_vote(iris_data):
     n_classes = len(np.unique(y))
 
     clf = BaggingClassifier(
-        estimator=SVC(probability=False), 
+        estimator=Ridge(), 
         n_estimators=10, 
         random_state=42
     )
@@ -85,3 +85,4 @@ def test_bagging_classifier_predict_proba_hard_vote(iris_data):
 
     assert proba.shape == (len(y), n_classes)
     assert np.all((proba >= 0) & (proba <= 1))
+
