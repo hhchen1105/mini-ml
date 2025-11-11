@@ -26,3 +26,15 @@ def test_knn_regressor_with_different_k():
     
     expected_prediction = np.array([20])    
     assert_allclose(prediction, expected_prediction)
+
+def test_knn_regressor_with_different_weights():
+    X_train = np.array([[1.0], [2.0], [3.0]])
+    y_train = np.array([1.0, 2.0, 3.0])
+    X_test = np.array([[1.5]])
+
+    knn = KNeighborsRegressor(n_neighbors=2, weights='distance')
+    knn.fit(X_train, y_train)
+    prediction = knn.predict(X_test)
+    
+    expected_prediction = np.array([1.5])   
+    assert_allclose(prediction, expected_prediction)
