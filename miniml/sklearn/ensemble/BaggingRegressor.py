@@ -1,32 +1,44 @@
 import numpy as np
+import copy
 from ..tree.DecisionTreeRegressor import DecisionTreeRegressor
 
 class BaggingRegressor:
-    def __init__(self, n_estimators=10, max_samples=1.0, random_state=None):
+    def __init__(self, base_estimator=None, n_estimators=10, max_samples=1.0, random_state=None):
+        self.base_estimator = base_estimator
         self.n_estimators = n_estimators
         self.max_samples = max_samples
         self.random_state = random_state
-        self.trees = [] # 命名為 self.trees，與範例檔案一致
+        self.trees = []
+        self.base_estimator_ = None
 
-    def _bootstrap_sample(self, X, y):
+    def _bootstrap_sample(self, X, y, rng):
         n_samples = X.shape[0]
         # 根據 self.max_samples 決定抽樣數量
         n_bootstrap_samples = int(self.max_samples * n_samples)
         
-        # np.random.choice 會幫我們處理隨機抽樣
-        # replace=True 是 Bagging 的核心
-        indices = np.random.choice(n_samples, n_bootstrap_samples, replace=True)
+        # use rng.choice
+        indices = rng.choice(n_samples, n_bootstrap_samples, replace=True)
         return X[indices], y[indices]
 
     def fit(self, X, y):
-        if self.random_state is not None:
-            np.random.seed(self.random_state)
+        # Boundary testing
+        if not (0.0 < self.max_samples <= 1.0):
+            raise ValueError(f"max_samples must be in (0.0, 1.0], but got {self.max_samples}")
+        # Create a local RandomState generator
+        rng = np.random.RandomState(self.random_state)
+
+        self.trees = []
+
+        if self.base_estimator is None:
+            self.base_estimator_ = DecisionTreeRegressor()
+        else:
+            self.base_estimator_ = self.base_estimator
         
         self.trees = []
 
         for _ in range(self.n_estimators):
-            tree = DecisionTreeRegressor() 
-            X_sample, y_sample = self._bootstrap_sample(X, y)
+            tree = copy.deepcopy(self.base_estimator_)
+            X_sample, y_sample = self._bootstrap_sample(X, y, rng)
             tree.fit(X_sample, y_sample)
             self.trees.append(tree)
 
