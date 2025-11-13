@@ -12,7 +12,13 @@ class KNeighborsRegressor:
         self.X_train = X
         self.y_train = y
 
+        if self.n_neighbors > len(self.y_train):
+            raise ValueError(f"n_neighbors ({self.n_neighbors}) is greater than number of training samples ({len(self.y_train)}).")
+
     def predict(self, X):
+        if X.shape[1] != self.X_train.shape[1]:
+            raise ValueError(f"Number of features in X ({X.shape[1]}) does not match training data ({self.X_train.shape[1]}).")
+        
         predictions = [self._predict_sample(x) for x in X]
         return np.array(predictions)
 
