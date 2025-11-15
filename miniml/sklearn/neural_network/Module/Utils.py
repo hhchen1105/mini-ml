@@ -1,7 +1,7 @@
-from Module.Learning_Rate_Scheduler import WarmUpCosineAnnealing
-from Module.Solver import AdamWSolver
-from Module.Activation_Function import SigmoidActivation, LeakyReLUActivation, IdentityActivation, SoftmaxActivation
-from Module.Loss_Function import MSE, CrossEntropy_MultiClass
+from .Learning_Rate_Scheduler import WarmUpCosineAnnealing
+from .Solver import AdamWSolver
+from .Activation_Function import SigmoidActivation, LeakyReLUActivation, IdentityActivation, SoftmaxActivation
+from .Loss_Function import MSE, CrossEntropy_MultiClass
 
 
 class Activations:
