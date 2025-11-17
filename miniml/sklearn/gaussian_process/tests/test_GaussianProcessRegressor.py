@@ -65,5 +65,43 @@ def test_gpr_shape_handling():
     assert preds.shape == (10,)
 
 
+def test_gpr_normalize_y_true():
+    X = np.linspace(0, 3, 5).reshape(-1, 1)
+    y = 3.0 + 2.0 * np.sin(X).ravel()   
+
+    gpr = GaussianProcessRegressor(normalize_y=True)
+    gpr.fit(X, y)
+
+    X_test = np.array([[1.2], [2.5]])
+    y_mean, y_std = gpr.predict(X_test, return_std=True)
+
+    # y_std must be positive
+    assert np.all(y_std >= 0)
+
+    # y_mean should be finite and correct shape
+    assert y_mean.shape == (2,)
+    assert y_std.shape == (2,)
+
+
+def test_gpr_covariance_matches_variance():
+    X = np.array([[0.0], [1.0], [2.0]])
+    y = np.sin(X).ravel()
+
+    gpr = GaussianProcessRegressor()
+    gpr.fit(X, y)
+
+    X_test = np.array([[0.5], [1.5], [2.5]])
+
+    # get covariance and std
+    y_mean_cov, y_cov = gpr.predict(X_test, return_cov=True)
+    y_mean_std, y_std = gpr.predict(X_test, return_std=True)
+
+    # Extract variance from covariance diagonal
+    variance_from_cov = np.diag(y_cov)
+
+    # Compare std^2 with cov diagonal
+    assert np.allclose(y_std ** 2, variance_from_cov, atol=1e-6)
+
+
 if __name__ == "__main__":
     pytest.main()

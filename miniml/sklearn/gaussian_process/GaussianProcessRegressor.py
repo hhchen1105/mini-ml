@@ -86,12 +86,16 @@ class GaussianProcessRegressor:
         # To compute std or cov, compute v = solve(L, K_*^T)
         # Solve L v = K_*^T
         v = np.linalg.solve(self.L_, K_trans.T)
-
+        
         # Return covariance
         if return_cov:
-            # K** = kernel(X, X)
-            K_self = self.kernel_(X, X)  # shape (n_test, n_test)
+            K_self = self.kernel_(X, X)
             y_cov = K_self - v.T.dot(v)
+
+            # Undo normalization for covariance
+            if self.normalize_y:
+                y_cov = y_cov * (self.y_std_ ** 2)
+
             return y_mean.ravel(), y_cov
 
         # Return standard deviation
@@ -99,6 +103,10 @@ class GaussianProcessRegressor:
         K_self_diag = np.diag(self.kernel_(X, X))
         y_var = K_self_diag - np.sum(v**2, axis=0)
         y_std = np.sqrt(np.maximum(y_var, 0))  # numerical stability
+
+        # Undo normalization for std
+        if self.normalize_y:
+            y_std = y_std * self.y_std_
 
         return y_mean.ravel(), y_std
 
