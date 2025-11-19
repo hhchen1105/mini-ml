@@ -2,6 +2,7 @@ import pytest
 import numpy as np
 from miniml.sklearn.gaussian_process import GaussianProcessRegressor
 
+
 def test_gpr_fit_predict_mean():
     # Simple 1D dataset: y = sin(x)
     X = np.array([[0.0], [1.0], [2.0]])
