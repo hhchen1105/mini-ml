@@ -20,21 +20,6 @@ from miniml.sklearn.neural_network import MLPClassifier
 
 
 # ============== Data Generator ==============
-def generate_regression_dataset(num_samples: int = 3, X_dim: int = 10, y_dim: int = 3, random_seed: int = 42) -> tuple:
-    np.random.seed(random_seed)
-    X = np.random.randn(num_samples, X_dim)
-
-    weight_matrix = np.random.randn(X_dim, y_dim)
-    bias_vector = np.random.randn(y_dim)
-
-    logits = np.dot(X, weight_matrix) + bias_vector
-
-    exp_logits = np.exp(logits - np.max(logits, axis=1, keepdims=True))
-    y = exp_logits / np.sum(exp_logits, axis=1, keepdims=True)
-
-    return X, y
-
-
 def generate_classification_dataset(num_samples: int = 3, X_dim: int = 10, y_dim: int = 3, random_seed: int = 42) -> tuple:
     np.random.seed(random_seed)
     weight_matrix = np.random.randn(X_dim, y_dim)
