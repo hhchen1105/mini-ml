@@ -36,8 +36,10 @@ def test_extra_trees_classifier_predict_proba():
 
     proba = clf.predict_proba(X)
 
-    # 機率矩陣形狀： (樣本數, 類別數=2)
-    assert proba.shape == (len(y), 2)
+    n_classes = len(np.unique(y))
+
+    # 機率矩陣形狀： (樣本數, 類別數)
+    assert proba.shape == (len(y), n_classes)
     # 每一列機率總和要等於 1
     assert np.allclose(proba.sum(axis=1), 1)
 
@@ -56,3 +58,4 @@ def test_extra_trees_classifier_score():
 
 if __name__ == "__main__":
     pytest.main()
+``
