@@ -1,4 +1,4 @@
 from .KNeighborsClassifier import KNeighborsClassifier
-from .KNeighborsRegressor import KNeighborsRegressor
+from .RadiusNeighborsRegressor import RadiusNeighborsRegressor
 
-__all__ = ['KNeighborsClassifier', 'KNeighborsRegressor']
+__all__ = ['KNeighborsClassifier', 'RadiusNeighborsRegressor']
