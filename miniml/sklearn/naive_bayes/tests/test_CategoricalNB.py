@@ -6,8 +6,8 @@ from numpy.testing import assert_allclose
 @pytest.mark.parametrize(
     "alpha, fit_prior",
     [
-        (1.0, True, 0.5),  # With smoothing
-        (1.0e-10, True, 1.0) # Minimal smoothing, should be more confident
+        (1.0, True),  # With smoothing
+        (1.0e-10, True) # Minimal smoothing, should be more confident
     ],
 )
 def test_CategoricalNB_simple(alpha, fit_prior):
