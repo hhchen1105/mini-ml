@@ -4,13 +4,13 @@ from miniml.sklearn.naive_bayes.CategoricalNB import CategoricalNB
 from numpy.testing import assert_allclose
 
 @pytest.mark.parametrize(
-    "alpha, fit_prior, expected_proba_start",
+    "alpha, fit_prior",
     [
         (1.0, True, 0.5),  # With smoothing
         (1.0e-10, True, 1.0) # Minimal smoothing, should be more confident
     ],
 )
-def test_CategoricalNB_simple(alpha, fit_prior, expected_proba_start):
+def test_CategoricalNB_simple(alpha, fit_prior):
     # Simple dataset
     # Feature 0: 3 categories (0, 1, 2)
     # Feature 1: 2 categories (0, 1)
