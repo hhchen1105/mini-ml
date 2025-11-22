@@ -56,7 +56,19 @@ def test_CategoricalNB_shapes():
     
     assert clf.class_count_.shape == (3,)
     assert len(clf.feature_log_prob_) == 3
-    
+
     # Check shape of first feature's log prob: (n_classes, n_categories)
     assert clf.feature_log_prob_[0].shape[0] == 3
     assert clf.feature_log_prob_[0].shape[1] >= 5
+
+def test_CategoricalNB_error():
+    X = np.array([[0, 0], [1, 1]])
+    y = np.array([0, 1])
+    clf = CategoricalNB()
+    clf.fit(X, y)
+    
+    # Test data has 1 feature，but training data has 2
+    X_bad = np.array([[0], [1]])
+    
+    with pytest.raises((IndexError, ValueError)):
+        clf.predict(X_bad)
