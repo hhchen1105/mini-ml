@@ -4,21 +4,21 @@ from miniml.sklearn.gaussian_process import GaussianProcessClassifier
 
 
 def test_gpc_fit_and_basic_predict_proba():
-    # Small binary classification dataset
+    #binary classification dataset
     X = np.array([[0.0], [1.0], [2.0], [3.0]])
     y = np.array([0, 1, 0, 1])
 
     gpc = GaussianProcessClassifier()
     gpc.fit(X, y)
 
-    # One test sample
+    #   test sample
     X_test = np.array([[1.5]])
     proba = gpc.predict_proba(X_test)
 
-    # The output should have shape (n_test_samples, n_classes)
+    #output should have shape (n_test_samples, n_classes)
     assert proba.shape == (1, 2)
 
-    # All values should be finite (no NaN or inf)
+    #  values should be finite (no NaN or inf)
     assert np.isfinite(proba).all()
 
     # Probabilities for each sample should sum to 1
@@ -33,7 +33,7 @@ def test_gpc_predict_returns_valid_labels():
     gpc = GaussianProcessClassifier()
     gpc.fit(X, y)
 
-    # Two test samples
+    #  test samples
     X_test = np.array([[0.1], [2.9]])
     y_pred = gpc.predict(X_test)
 
@@ -46,7 +46,7 @@ def test_gpc_predict_returns_valid_labels():
 
 
 def test_gpc_multiclass_support():
-    # Simple 3-class dataset
+    # 3-class dataset
     X = np.array([[0.0], [1.0], [2.0],
                   [3.0], [4.0], [5.0]])
     y = np.array([0, 1, 2, 0, 1, 2])
@@ -57,14 +57,13 @@ def test_gpc_multiclass_support():
     X_test = np.array([[0.5], [2.5], [4.5]])
     proba = gpc.predict_proba(X_test)
 
-    # Shape: (n_test_samples, n_classes)
     assert proba.shape == (3, 3)
 
     # Probabilities must lie between 0 and 1
     assert np.all(proba >= 0.0)
     assert np.all(proba <= 1.0)
 
-    # Each row of probabilities should sum to 1
+    # each row of probabilities should sum to 1
     np.testing.assert_allclose(proba.sum(axis=1), np.ones(3))
 
 
@@ -86,15 +85,15 @@ def test_gpc_handles_1d_input():
 
 
 def test_gpc_raises_if_not_fitted():
-    # Using the model before calling fit should raise an error
+ 
+
     gpc = GaussianProcessClassifier()
     X_test = np.array([[1.0]])
 
-    # predict() without fit() should raise RuntimeError
     with pytest.raises(RuntimeError):
         gpc.predict(X_test)
 
-    # predict_proba() without fit() should also raise RuntimeError
+ 
     with pytest.raises(RuntimeError):
         gpc.predict_proba(X_test)
 
