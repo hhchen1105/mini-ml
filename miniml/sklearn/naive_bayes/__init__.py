@@ -1,7 +1,11 @@
-from .GaussianNB import GaussianNB
+from .BernoulliNB import BernoulliNB
+from .CategoricalNB import CategoricalNB
 from .ComplementNB import ComplementNB
+from .GaussianNB import GaussianNB
 
 __all__ = [
-    'GaussianNB',
+    'BernoulliNB',
+    'CategoricalNB',
     'ComplementNB',
+    'GaussianNB',
 ]
