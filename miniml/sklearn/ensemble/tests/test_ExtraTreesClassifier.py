@@ -58,4 +58,3 @@ def test_extra_trees_classifier_score():
 
 if __name__ == "__main__":
     pytest.main()
-``
