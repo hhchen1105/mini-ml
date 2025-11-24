@@ -8,43 +8,47 @@ class GaussianProcessClassifier:
         self.copy_X_train = copy_X_train
         self.random_state = random_state
 
-        # Attributes set during fit
+        #attributes set during fit
         self.classes_ = None
         self.n_classes_ = None
         self.X_train_ = None
         self.n_features_in_ = None
         self.kernel_ = None
         self._dual_coef = None 
-
+        
     def fit(self, X, y):
+     
+        X = self._prepare_X(X)
+        y = np.asarray(y)
+
         if X.shape[0] != y.shape[0]:
             raise ValueError(
                 f"Inconsistent shapes: X has {X.shape[0]} samples "
                 f"but y has {y.shape[0]}"
             )
 
-        # Get the unique class labels and map them to integer indices
+        #get   the class labels and map them to integer indices
         self.classes_, y_indices = np.unique(y, return_inverse=True)
         self.n_classes_ = self.classes_.shape[0]
         self.n_features_in_ = X.shape[1]
 
-        # a copy of the training data
+        #a copy of the training data
         self.X_train_ = X.copy() if self.copy_X_train else X
 
-        # Decide which kernel function to use
+        #Decide which kernel function to use
         if self.kernel is None:
             self.kernel_ = self._rbf_kernel
         else:
             self.kernel_ = self.kernel
 
-        # Compute the kernel matrix on the training set
+            # Compute the kernel matrix on the training set
         K = self.kernel_(self.X_train_, self.X_train_)
 
         # Add a small value on the diagonal to make the system more stable
         n_samples = K.shape[0]
         K_reg = K + self.alpha * np.eye(n_samples)
 
-        # Turn class indices into a one-hot representation
+        #Turn class indices into a one-hot representation.
         Y_onehot = self._one_hot(y_indices, self.n_classes_)
 
         # Find the coefficients that link training points to class scores
@@ -53,31 +57,33 @@ class GaussianProcessClassifier:
         return self
 
     def predict_proba(self, X):
+        # check if the model has been fitted
         self._check_is_fitted()
 
+        # Make sure X has the right shape
         X = self._prepare_X(X)
 
-        #Measure how similar each test point is to the training points
-        K_trans = self.kernel_(X, self.X_train_)  # (n_test, n_train)
+        # Compute similarities between test points and training points
+        K_trans = self.kernel_(X, self.X_train_)
 
-        # Turn similarities into raw scores for each class
+        # turn these similarities into raw class scores
         scores = K_trans @ self._dual_coef
 
-        #Convert scores into probabilities (softmax)
-        scores = scores - scores.max(axis=1, keepdims=True)  # avoid overflow
+        #    softmax to get probabilities
+        scores = scores - scores.max(axis=1, keepdims=True)
         exp_scores = np.exp(scores)
         proba = exp_scores / exp_scores.sum(axis=1, keepdims=True)
 
         return proba
-
+    
     def predict(self, X):
-        #Use the class with the highest predicted probability
+        #use the class with the highest predicted probability
         proba = self.predict_proba(X)
         class_indices = np.argmax(proba, axis=1)
         return self.classes_[class_indices]
 
     def _prepare_X(self, X):
-        # Convert X to a 2D NumPy array.
+        # convert X to a 2D NumPy array
         X = np.asarray(X)
         if X.ndim == 1:
             X = X.reshape(-1, 1)
@@ -85,7 +91,7 @@ class GaussianProcessClassifier:
 
     @staticmethod
     def _one_hot(y, n_classes):
-        # Create a one-hot encoding
+     # create a one-hot encoding
         y = np.asarray(y, dtype=int)
         if y.ndim != 1:
             raise ValueError("y must be a 1D array of label indices.")
@@ -96,7 +102,7 @@ class GaussianProcessClassifier:
 
     @staticmethod
     def _rbf_kernel(X1, X2, length_scale=1.0, sigma_f=1.0):
-        # RBF kernel based on squared Euclidean distance.
+             # RBF kernel based on squared Euclidean distance
         X1 = np.asarray(X1)
         X2 = np.asarray(X2)
         sq_norms_1 = np.sum(X1 ** 2, axis=1).reshape(-1, 1)
