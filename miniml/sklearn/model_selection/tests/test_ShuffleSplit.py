@@ -4,7 +4,7 @@ from miniml.sklearn.model_selection.ShuffleSplit import ShuffleSplit
 
 @pytest.mark.parametrize("n, test_size", [
     (100, 0.2), (100, 0.33), (37, 0.2),
-(50, 10),# int
+(50, 0.1),# int
 ])
 
 def test_indices_range_and_lengths(n, test_size):

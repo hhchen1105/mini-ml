@@ -12,6 +12,11 @@ class ShuffleSplit:
         n_test = int(n_samples * self.test_size)
         n_train = int(n_samples * self.train_size) if self.train_size is not None else n_samples - n_test
         rng = np.random.default_rng(self.random_state)
+        if not isinstance(self.test_size, float):
+            raise ValueError("test_size has to be float")
+        if self.test_size is None and self.train_size is None:
+            n_test = int(0.1 * n_samples)
+            n_train = n_samples - n_test
         if self.n_splits < 1:
             raise ValueError("n_splits must be >= 1")
         if n_test <= 0 or n_test >= n_samples:
