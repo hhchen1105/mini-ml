@@ -1,6 +1,7 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
-class Lasso():
+class Lasso(BaseEstimator):
     def __init__(self, alpha=1.0, max_iter=1000, tol=1e-4):
         self.alpha = alpha
         self.max_iter = max_iter

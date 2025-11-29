@@ -1,8 +1,9 @@
 import numpy as np
 from typing import Any
+from miniml.sklearn.base import BaseEstimator
 
 
-class BernoulliNB:
+class BernoulliNB(BaseEstimator):
     def __init__(self, alpha:float=1.0, force_alpha:bool=True, binarize:float=0.0, fit_prior:bool=True, class_prior:Any|None=None):
         self.alpha = alpha                      # p = p+alpha
         self.force_alpha = force_alpha

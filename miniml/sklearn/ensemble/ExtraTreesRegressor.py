@@ -1,7 +1,8 @@
 import numpy as np
 from ..tree.DecisionTreeRegressor import DecisionTreeRegressor
+from miniml.sklearn.base import BaseEstimator
 
-class ExtraTreesRegressor:
+class ExtraTreesRegressor(BaseEstimator):
     def __init__(self, n_estimators=100, max_depth=None, max_features="sqrt",
                  bootstrap=False, random_state=None):
         self.n_estimators = int(n_estimators)
