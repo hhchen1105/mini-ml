@@ -1,6 +1,7 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
-class SGDClassifier:
+class SGDClassifier(BaseEstimator):
     def __init__(self, learning_rate=0.01, n_iter=1000, alpha=0.0001):
         self.learning_rate = learning_rate
         self.n_iter = n_iter

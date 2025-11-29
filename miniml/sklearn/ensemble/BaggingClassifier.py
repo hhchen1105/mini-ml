@@ -1,9 +1,10 @@
 import numpy as np
 import warnings
 import copy
+from miniml.sklearn.base import BaseEstimator
 
 
-class BaggingClassifier:
+class BaggingClassifier(BaseEstimator):
     def __init__(
         self,
         estimator=None,

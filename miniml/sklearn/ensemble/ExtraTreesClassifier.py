@@ -1,8 +1,9 @@
 import numpy as np
 from ..tree.DecisionTreeClassifier import DecisionTreeClassifier
+from miniml.sklearn.base import BaseEstimator
 
 
-class ExtraTreesClassifier:
+class ExtraTreesClassifier(BaseEstimator):
     def __init__(
         self,
         n_estimators=100,

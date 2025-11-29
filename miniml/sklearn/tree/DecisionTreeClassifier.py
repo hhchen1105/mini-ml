@@ -1,7 +1,8 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
 
-class DecisionTreeClassifier:
+class DecisionTreeClassifier(BaseEstimator):
     def __init__(self, max_depth=None):
         self.max_depth = max_depth
         self.tree = None

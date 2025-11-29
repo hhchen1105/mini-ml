@@ -3,6 +3,7 @@ import numpy as np
 from math import sqrt, pi, cos
 from typing import Tuple, List
 from abc import ABC, abstractmethod
+from miniml.sklearn.base import BaseEstimator
 
 
 # ============== Activation Functions ==============
@@ -193,7 +194,7 @@ HE_FACTOR = 2.0
 
 
 # ============== MLPClassifier ==============
-class MLPClassifier:
+class MLPClassifier(BaseEstimator):
     def __init__(self, hidden_layer_sizes: Tuple[int, ...] = (32,), solver: str = "adamw", batch_size: int = 1,
                  learning_rate: str = "warmup_cosine_annealing", learning_rate_init: Tuple[float, float] = (1e-3, 0.1),
                  loss: str = "cross_entropy_multiclass", max_iter: int = 100, verbose: bool = True):

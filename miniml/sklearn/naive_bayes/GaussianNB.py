@@ -1,6 +1,7 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
-class GaussianNB:
+class GaussianNB(BaseEstimator):
     def __init__(self) -> None:
         self.classes_ = None
         self.class_prior_ = None

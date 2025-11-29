@@ -1,7 +1,8 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
 
-class RadiusNeighborsClassifier:
+class RadiusNeighborsClassifier(BaseEstimator):
 	def __init__(
 		self,
 		radius=1.0,

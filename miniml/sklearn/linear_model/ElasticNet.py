@@ -1,6 +1,8 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
-class ElasticNet:
+
+class ElasticNet(BaseEstimator):
     def __init__(self, alpha=1.0, l1_ratio=0.5, max_iter=1000, tol=1e-4):
         self.alpha = alpha
         self.l1_ratio = l1_ratio
@@ -27,14 +29,21 @@ class ElasticNet:
                 rho = np.dot(X[:, j], residual + self.coef_[j] * X[:, j])
 
                 if rho < -self.alpha * self.l1_ratio:
-                    self.coef_[j] = (rho + self.alpha * self.l1_ratio) / (np.dot(X[:, j], X[:, j]) + self.alpha * (1 - self.l1_ratio))
+                    self.coef_[j] = (rho + self.alpha * self.l1_ratio) / (
+                        np.dot(X[:, j], X[:, j]) + self.alpha * (1 - self.l1_ratio)
+                    )
                 elif rho > self.alpha * self.l1_ratio:
-                    self.coef_[j] = (rho - self.alpha * self.l1_ratio) / (np.dot(X[:, j], X[:, j]) + self.alpha * (1 - self.l1_ratio))
+                    self.coef_[j] = (rho - self.alpha * self.l1_ratio) / (
+                        np.dot(X[:, j], X[:, j]) + self.alpha * (1 - self.l1_ratio)
+                    )
                 else:
                     self.coef_[j] = 0.0
 
             # Check for convergence
-            if np.sum(np.abs(self.coef_ - coef_old)) < self.tol and np.abs(self.intercept_ - intercept_old) < self.tol:
+            if (
+                np.sum(np.abs(self.coef_ - coef_old)) < self.tol
+                and np.abs(self.intercept_ - intercept_old) < self.tol
+            ):
                 break
 
         return self
@@ -46,4 +55,4 @@ class ElasticNet:
         y_pred = self.predict(X)
         u = np.sum((y - y_pred) ** 2)
         v = np.sum((y - np.mean(y)) ** 2)
-        return 1 - u / v    
+        return 1 - u / v

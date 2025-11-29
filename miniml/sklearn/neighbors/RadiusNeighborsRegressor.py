@@ -1,6 +1,7 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
-class RadiusNeighborsRegressor:
+class RadiusNeighborsRegressor(BaseEstimator):
     def __init__(self, radius=1.0, weights="uniform"):
         radius = float(radius)
         if radius <= 0.0:

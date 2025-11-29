@@ -1,7 +1,8 @@
 import numpy as np
 from scipy.optimize import minimize
+from miniml.sklearn.base import BaseEstimator
 
-class LogisticRegression:
+class LogisticRegression(BaseEstimator):
     def __init__(self, C=1.0, max_iter=100, tol=1e-4):
         self.C = C
         self.max_iter = max_iter

@@ -1,6 +1,8 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
-class ExtraTreeRegressor:
+
+class ExtraTreeRegressor(BaseEstimator):
     """
     A minimal implementation of ExtraTreeRegressor for mini-ml homework.
     This version only learns the mean target value and predicts the same

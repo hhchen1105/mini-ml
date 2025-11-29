@@ -1,7 +1,8 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
 
-class MLPRegressor:
+class MLPRegressor(BaseEstimator):
     def __init__(
         self, hidden_layer_sizes=(100,), learning_rate_init=0.001, max_iter=200
     ):

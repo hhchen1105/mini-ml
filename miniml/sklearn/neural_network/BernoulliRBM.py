@@ -1,6 +1,7 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
-class BernoulliRBM:
+class BernoulliRBM(BaseEstimator):
     def __init__(self, n_components=128, learning_rate=0.01, n_epochs=10, 
                  batch_size=32, k=1, verbose=False, random_state=None):
         

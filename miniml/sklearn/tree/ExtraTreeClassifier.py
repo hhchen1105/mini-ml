@@ -1,7 +1,8 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
 
-class ExtraTreeClassifier:
+class ExtraTreeClassifier(BaseEstimator):
     """極度隨機樹分類器 (Extra-Tree Classifier) 的簡化實作。
 
     在每個節點：

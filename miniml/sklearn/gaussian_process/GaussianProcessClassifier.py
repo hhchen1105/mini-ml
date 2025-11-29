@@ -1,6 +1,7 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
-class GaussianProcessClassifier:
+class GaussianProcessClassifier(BaseEstimator):
 
     def __init__(self, kernel=None, alpha=1e-6, copy_X_train=True, random_state=None):
         self.kernel = kernel

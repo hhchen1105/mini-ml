@@ -1,8 +1,9 @@
 import numpy as np
 from ..tree.DecisionTreeClassifier import DecisionTreeClassifier
+from miniml.sklearn.base import BaseEstimator
 
 
-class RandomForestClassifier:
+class RandomForestClassifier(BaseEstimator):
     def __init__(
         self, n_estimators=100, max_features="sqrt", max_depth=None, random_state=None
     ):

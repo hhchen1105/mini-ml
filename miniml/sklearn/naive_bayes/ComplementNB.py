@@ -1,7 +1,8 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
 
-class ComplementNB:
+class ComplementNB(BaseEstimator):
     def __init__(self, alpha=1.0, norm=False):
         self.alpha = alpha
         self.norm = norm
