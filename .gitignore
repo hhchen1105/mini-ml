@@ -5,6 +5,6 @@ build/
 miniml.egg-info/
 __pycache__/
 .eggs/
-.pkl
+*.pkl
 .vscode
 .venv
