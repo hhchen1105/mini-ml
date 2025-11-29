@@ -1,7 +1,8 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
 
-class LinearRegression:
+class LinearRegression(BaseEstimator):
     def __init__(self, *, fit_intercept=True):
         self.fit_intercept = fit_intercept
         self.coef_, self.intercept_, self.rank_, self.singular_ = None, None, None, None
