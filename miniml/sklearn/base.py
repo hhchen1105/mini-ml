@@ -56,18 +56,3 @@ class BaseEstimator:
             setattr(self, key, value)
 
         return self
-
-    def save_model(self, filepath):
-        import pickle
-
-        with open(
-            filepath, "wb"
-        ) as f:  # save the entire instance (self), which includes all trained parameters
-            pickle.dump(self, f)
-
-    @classmethod
-    def load_model(cls, filepath):
-        import pickle
-
-        with open(filepath, "rb") as f:
-            return pickle.load(f)

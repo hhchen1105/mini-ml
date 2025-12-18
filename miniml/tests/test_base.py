@@ -40,33 +40,3 @@ def test_get_and_set_params():
     new_model.set_params(**params)
     
     assert new_model.get_params() == params
-
-def test_save_and_load_model(data, tmp_path):
-    """
-    Test model saving and loading (save_model/load_model).
-    Use tmp_path fixture to avoid creating temporary files in the project directory.
-    """
-    X, y = data
-    model = LinearRegression()
-    model.fit(X, y)
-    
-    original_pred = model.predict(X)
-    
-    save_file = tmp_path / "test_model.pkl"
-    
-    # 1. Save model
-    model.save_model(str(save_file))
-    
-    # Verify file was created
-    assert os.path.exists(save_file)
-    
-    # 2. Load model
-    loaded_model = LinearRegression.load_model(str(save_file))
-    
-    loaded_pred = loaded_model.predict(X)
-    
-    # 3. Verify loaded model's prediction is identical to original model
-    np.testing.assert_array_almost_equal(original_pred, loaded_pred)
-    
-    # Verify score is also identical
-    assert model.score(X, y) == loaded_model.score(X, y)
