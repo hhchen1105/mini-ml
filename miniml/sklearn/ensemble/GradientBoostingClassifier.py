@@ -1,8 +1,9 @@
 import numpy as np
 from ..tree.DecisionTreeRegressor import DecisionTreeRegressor
+from miniml.sklearn.base import BaseEstimator
 
 
-class GradientBoostingClassifier:
+class GradientBoostingClassifier(BaseEstimator):
     def __init__(self, n_estimators=100, learning_rate=0.1, max_depth=3, random_state=None):
         """
         Gradient Boosting Classifier

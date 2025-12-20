@@ -1,7 +1,8 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
 
-class KMeans:
+class KMeans(BaseEstimator):
     def __init__(self, n_clusters=8, max_iter=300, tol=1e-4, random_state=None):
         self.n_clusters = n_clusters
         self.max_iter = max_iter

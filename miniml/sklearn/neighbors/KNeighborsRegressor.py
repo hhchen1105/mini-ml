@@ -1,6 +1,7 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
-class KNeighborsRegressor:
+class KNeighborsRegressor(BaseEstimator):
     def __init__(self, n_neighbors=5, weights='uniform'):
         if weights not in ('uniform', 'distance'):
             raise ValueError("weights must be 'uniform' or 'distance'")

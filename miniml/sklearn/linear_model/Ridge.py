@@ -1,7 +1,8 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
 
-class Ridge:
+class Ridge(BaseEstimator):
     def __init__(self, alpha=1.0, fit_intercept=True):
         self.alpha = alpha
         self.fit_intercept = fit_intercept

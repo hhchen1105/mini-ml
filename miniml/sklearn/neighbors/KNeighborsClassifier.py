@@ -1,7 +1,8 @@
 import numpy as np
+from miniml.sklearn.base import BaseEstimator
 
 
-class KNeighborsClassifier:
+class KNeighborsClassifier(BaseEstimator):
     def __init__(self, n_neighbors=5):
         self.n_neighbors = n_neighbors
 

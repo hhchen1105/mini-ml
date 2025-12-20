@@ -1,8 +1,9 @@
 import numpy as np
 from ..tree.DecisionTreeRegressor import DecisionTreeRegressor
+from miniml.sklearn.base import BaseEstimator
 
 
-class RandomForestRegressor:
+class RandomForestRegressor(BaseEstimator):
     def __init__(
         self, n_estimators=100, max_features="sqrt", max_depth=None, random_state=None
     ):
